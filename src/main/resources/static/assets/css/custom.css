@@ -1,0 +1,12 @@
+.theme-white  .text-color {
+    color: #000 !important;
+}
+
+.theme-black  .text-color {
+    color: #fff !important;
+}
+
+
+.theme-black  .am-table-hover>tbody>tr:hover>td,.am-table-hover>tbody>tr:hover>th {
+    background-color:#666d70;
+}

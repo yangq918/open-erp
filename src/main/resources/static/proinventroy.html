@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Open ERP</title>
+    <meta name="description" content="这是一个 index 页面">
+    <meta name="keywords" content="index">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <link rel="icon" type="image/png" href="assets/i/favicon.png">
+    <link rel="apple-touch-icon-precomposed" href="assets/i/app-icon72x72@2x.png">
+    <meta name="apple-mobile-web-app-title" content="Amaze   UI"/>
+    <link rel="stylesheet" href="assets/css/amazeui.min.css"/>
+    <link rel="stylesheet" href="assets/css/amazeui.datatables.min.css"/>
+    <link rel="stylesheet" href="assets/css/app.css">
+    <link rel="stylesheet" href="assets/css/custom.css">
+    <script src="assets/js/jquery.min.js"></script>
+
+</head>
+
+<body data-type="index">
+<script src="assets/js/theme.js"></script>
+<div class="am-g tpl-g">
+    <!-- 头部 -->
+    <header>
+        <!-- logo -->
+        <div class="am-fl tpl-header-logo">
+            <a href="javascript:;"><img src="assets/img/logo.png" alt=""></a>
+        </div>
+        <!-- 右侧内容 -->
+        <div class="tpl-header-fluid">
+            <!-- 侧边切换 -->
+            <div class="am-fl tpl-header-switch-button am-icon-list">
+                    <span>
+
+                </span>
+            </div>
+            <!-- 搜索 -->
+
+            <!-- 其它功能-->
+            <div class="am-fr tpl-header-navbar">
+                <ul>
+                    <!-- 欢迎语 -->
+                    <li class="am-text-sm tpl-header-navbar-welcome">
+                        <a href="javascript:;">欢迎你, <span name="user_name_span">测试账号</span> </a>
+                    </li>
+
+
+                    <!-- 退出 -->
+                    <li class="am-text-sm">
+                        <a href="javascript:void(0);"  id="logout_a">
+                            <span class="am-icon-sign-out"></span> 退出
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </header>
+    <!-- 风格切换 -->
+    <div class="tpl-skiner">
+        <div class="tpl-skiner-toggle am-icon-cog">
+        </div>
+        <div class="tpl-skiner-content">
+            <div class="tpl-skiner-content-title">
+                选择主题
+            </div>
+            <div class="tpl-skiner-content-bar">
+                <span class="skiner-color skiner-white" data-color="theme-white"></span>
+                <span class="skiner-color skiner-black" data-color="theme-black"></span>
+            </div>
+        </div>
+    </div>
+    <!-- 侧边导航栏 -->
+    <div class="left-sidebar">
+        <!-- 用户信息 -->
+        <div class="tpl-sidebar-user-panel">
+            <div class="tpl-user-panel-slide-toggleable">
+                <div class="tpl-user-panel-profile-picture">
+                    <img  id="user_img_id"  src="assets/img/user02.png" alt="">
+                </div>
+                <span class="user-panel-logged-in-text">
+              <i class="am-icon-circle-o am-text-success tpl-user-panel-status-icon"></i>
+              <span name="user_name_span">测试账号</span>
+          </span>
+
+            </div>
+        </div>
+
+        <!-- 菜单 -->
+        <ul class="sidebar-nav">
+            <li class="sidebar-nav-heading">常用功能</li>
+            <li class="sidebar-nav-link">
+                <a href="index.html">
+                    <i class="am-icon-home sidebar-nav-link-logo"></i> 首页
+                </a>
+            </li>
+            <li class="sidebar-nav-link">
+                <a href="tables.html" class="active">
+                    <i class="am-icon-wpforms sidebar-nav-link-logo"></i> 库存管理
+                </a>
+            </li>
+
+
+        </ul>
+    </div>
+
+
+    <!-- 内容区域 -->
+    <div class="tpl-content-wrapper">
+
+        <div class="container-fluid am-cf">
+            <div class="row">
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+                    <div class="page-header-heading"><span class="am-icon-wpforms page-header-heading-icon"></span> 库存管理
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                <div class="widget am-cf">
+                    <div class="widget-head am-cf">
+                        <div class="widget-title am-fl">库存信息</div>
+
+                    </div>
+                    <div class="widget-body  widget-body-lg am-fr">
+
+                        <div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
+                            <div class="am-form-group">
+                                <div class="am-btn-toolbar">
+                                    <div class="am-btn-group am-btn-group-xs">
+                                        <button id="add_btn" type="button" class="am-btn am-btn-default am-btn-success"><span
+                                                class="am-icon-plus"></span> 新增
+                                        </button>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="am-u-sm-12 am-u-md-6 am-u-lg-3">
+                            <div class="am-form-group tpl-table-list-select">
+                                <select id="searchType" data-am-selected="{btnSize: 'sm'}">
+                                    <option value="all">所有类别</option>
+                                    <option value="productNo">物资编码</option>
+                                    <option value="name">物资名称</option>
+                                    <option value="manufacturer">生产厂商</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="am-u-sm-12 am-u-md-12 am-u-lg-3">
+                            <div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">
+                                <input type="text" id="searchValue" class="am-form-field ">
+                                <span class="am-input-group-btn">
+            <button id="search_btn" class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search"
+                    type="button"></button>
+          </span>
+                            </div>
+                        </div>
+                        <div class="am-u-sm-12">
+                            <table width="100%"
+                                   class="am-table am-table-compact tpl-table-black am-table-hover am-table-bordered am-table-radius"
+                                   id="example-r">
+                                <thead>
+                                <tr>
+                                    <th style="width: 12%">物资编码</th>
+                                    <th style="width: 12%">物资名称</th>
+                                    <th style="width: 10%">单位</th>
+                                    <th style="width: 10%">单位成本</th>
+                                    <th style="width: 10%">库存值</th>
+                                    <th style="width: 12%">型号</th>
+                                    <th style="width: 12%">生产厂商</th>
+                                    <th style="width: 22%">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                <!-- more data -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="am-u-lg-12 am-cf">
+
+                            <div class="am-fr">
+
+                                <ul id="page_ul" class="am-pagination tpl-pagination">
+                                    <li>
+                                        <div class="p_total_size" style="display: inline">共0条,0页</div>
+                                    </li>
+                                    <li><a href="javascript:void(0);" class="am-btn p_first_page">首页</a></li>
+                                    <li><a href="javascript:void(0);" class="am-btn p_pre_page">«</a></li>
+                                    <li class="am-active"><a href="javascript:void(0);" class="p_current_size">0</a>
+                                    </li>
+                                    <li><a href="javascript:void(0);" class="am-btn p_next_page">»</a></li>
+                                    <li><a href="javascript:void(0);" class="am-btn p_last_page">尾页</a></li>
+                                    <li>
+                                        <div>到第<input type="text" class="tpl-form-input p_jump_input"
+                                                      style="width: 30px" name="pageNum" id="pageNum">页
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <button id="jumpTo" type="button"
+                                                class="p_jump_to am-btn am-btn-default am-btn-xs am-btn-success"></span>
+                                            确定
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+    <div class="am-modal am-modal-no-btn" tabindex="-1" id="add-proIn-modal">
+        <div class="am-modal-dialog cus_modal_div">
+            <div class="am-modal-hd text-color">新增库存信息
+                <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+            </div>
+            <div class="am-modal-bd">
+                <div class="widget-body am-fr">
+
+                    <form class="am-form tpl-form-line-form add_form">
+                        <div class="am-form-group">
+                            <label for="productNo" class="am-u-sm-3 am-form-label">库存编码</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" class="tpl-form-input cus_form_input" name="productNo" id="productNo"
+                                       placeholder="请输入库存编码">
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="name" class="am-u-sm-3 am-form-label">物资名称</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" class="tpl-form-input cus_form_input" name="name" id="name"
+                                       placeholder="请输入物资名称">
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="unit" class="am-u-sm-3 am-form-label">单位</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" class="tpl-form-input cus_form_input" name="unit" id="unit"
+                                       placeholder="请输入单位">
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="unitCost" class="am-u-sm-3 am-form-label">单位成本</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" class="tpl-form-input cus_form_input" name="unitCost" id="unitCost"
+                                       placeholder="请输入单位成本">
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="address" class="am-u-sm-3 am-form-label">存放位置</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" class="tpl-form-input cus_form_input" name="address" id="address"
+                                       placeholder="请输入存放位置">
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="inventoryNum" class="am-u-sm-3 am-form-label">库存值</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" class="tpl-form-input cus_form_input" name="inventoryNum"
+                                       id="inventoryNum" placeholder="请输入库存值">
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="productModel" class="am-u-sm-3 am-form-label">型号</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" class="tpl-form-input cus_form_input" name="productModel"
+                                       id="productModel" placeholder="请输入型号">
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="spec" class="am-u-sm-3 am-form-label">规格</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" class="tpl-form-input cus_form_input" name="spec" id="spec"
+                                       placeholder="请输入规格">
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="manufacturer" class="am-u-sm-3 am-form-label">生产厂商</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" class="tpl-form-input cus_form_input" name="manufacturer"
+                                       id="manufacturer" placeholder="请输入生产厂商">
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="mTeleNumber" class="am-u-sm-3 am-form-label">厂家联系电话</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" class="tpl-form-input cus_form_input" name="mTeleNumber"
+                                       id="mTeleNumber" placeholder="请输入厂家联系电话">
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="purpose" class="am-u-sm-3 am-form-label">用途</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" class="tpl-form-input cus_form_input" name="purpose" id="purpose"
+                                       placeholder="请输入用途">
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="desc" class="am-u-sm-3 am-form-label">说明</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" class="tpl-form-input cus_form_input" name="desc" id="desc"
+                                       placeholder="请输入说明">
+                            </div>
+                        </div>
+
+                        <div class="am-form-group">
+                            <div class="am-u-sm-9 am-u-sm-push-2">
+                                <button type="button" id="add_prod_btn"
+                                        class="am-btn am-btn-primary tpl-btn-bg-color-success ">提交
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="am-modal am-modal-no-btn" tabindex="-1" id="edit-proIn-modal">
+        <div class="am-modal-dialog cus_modal_div">
+            <div class="am-modal-hd text-color">修改库存信息
+                <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+            </div>
+            <div class="am-modal-bd">
+                <div class="widget-body am-fr">
+
+                    <form class="am-form tpl-form-line-form edit_form">
+                        <div class="am-form-group">
+                            <label for="e_productNo" class="am-u-sm-3 am-form-label">库存编码</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" class="tpl-form-input cus_form_input" name="productNo"
+                                       id="e_productNo"
+                                       placeholder="请输入库存编码">
+                                <input type="hidden" class="cus_form_input" name="id" id="e_id">
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="e_name" class="am-u-sm-3 am-form-label">物资名称</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" class="tpl-form-input cus_form_input" name="name" id="e_name"
+                                       placeholder="请输入物资名称">
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="e_unit" class="am-u-sm-3 am-form-label">单位</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" class="tpl-form-input cus_form_input" name="unit" id="e_unit"
+                                       placeholder="请输入单位">
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="e_unitCost" class="am-u-sm-3 am-form-label">单位成本</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" class="tpl-form-input cus_form_input" name="unitCost" id="e_unitCost"
+                                       placeholder="请输入单位成本">
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="e_address" class="am-u-sm-3 am-form-label">存放位置</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" class="tpl-form-input cus_form_input" name="address" id="e_address"
+                                       placeholder="请输入存放位置">
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="e_inventoryNum" class="am-u-sm-3 am-form-label">库存值</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" class="tpl-form-input cus_form_input" name="inventoryNum"
+                                       id="e_inventoryNum" placeholder="请输入库存值">
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="e_productModel" class="am-u-sm-3 am-form-label">型号</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" class="tpl-form-input cus_form_input" name="productModel"
+                                       id="e_productModel" placeholder="请输入型号">
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="e_spec" class="am-u-sm-3 am-form-label">规格</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" class="tpl-form-input cus_form_input" name="spec" id="e_spec"
+                                       placeholder="请输入规格">
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="e_manufacturer" class="am-u-sm-3 am-form-label">生产厂商</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" class="tpl-form-input cus_form_input" name="manufacturer"
+                                       id="e_manufacturer" placeholder="请输入生产厂商">
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="e_mTeleNumber" class="am-u-sm-3 am-form-label">厂家联系电话</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" class="tpl-form-input cus_form_input" name="mTeleNumber"
+                                       id="e_mTeleNumber" placeholder="请输入厂家联系电话">
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="e_purpose" class="am-u-sm-3 am-form-label">用途</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" class="tpl-form-input cus_form_input" name="purpose" id="e_purpose"
+                                       placeholder="请输入用途">
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="e_desc" class="am-u-sm-3 am-form-label">说明</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" class="tpl-form-input cus_form_input" name="desc" id="e_desc"
+                                       placeholder="请输入说明">
+                            </div>
+                        </div>
+
+                        <div class="am-form-group">
+                            <div class="am-u-sm-9 am-u-sm-push-2">
+                                <button type="button" id="edit_prod_btn"
+                                        class="am-btn am-btn-primary tpl-btn-bg-color-success ">修改
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="am-modal am-modal-no-btn" tabindex="-1" id="show-proIn-modal">
+        <div class="am-modal-dialog cus_modal_div">
+            <div class="am-modal-hd text-color">库存信息
+                <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+            </div>
+            <div class="am-modal-bd">
+                <div class="widget-body am-fr">
+
+                    <form class="am-form tpl-form-line-form show_form">
+                        <div class="am-form-group">
+                            <label for="s_productNo" class="am-u-sm-3 am-form-label">库存编码</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" disabled class="tpl-form-input cus_form_input" name="productNo"
+                                       id="s_productNo"
+                                >
+                                <input type="hidden" class="cus_form_input" name="id" id="s_id">
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="s_name" class="am-u-sm-3 am-form-label">物资名称</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" disabled class="tpl-form-input cus_form_input" name="name"
+                                       id="s_name"
+                                >
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="s_unit" class="am-u-sm-3 am-form-label">单位</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" disabled class="tpl-form-input cus_form_input" name="unit"
+                                       id="s_unit"
+                                >
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="s_unitCost" class="am-u-sm-3 am-form-label">单位成本</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" disabled class="tpl-form-input cus_form_input" name="unitCost"
+                                       id="s_unitCost"
+                                >
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="s_address" class="am-u-sm-3 am-form-label">存放位置</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" disabled class="tpl-form-input cus_form_input" name="address"
+                                       id="s_address"
+                                >
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="s_inventoryNum" class="am-u-sm-3 am-form-label">库存值</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" disabled class="tpl-form-input cus_form_input" name="inventoryNum"
+                                       id="s_inventoryNum">
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="s_productModel" class="am-u-sm-3 am-form-label">型号</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" disabled class="tpl-form-input cus_form_input" name="productModel"
+                                       id="s_productModel">
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="s_spec" class="am-u-sm-3 am-form-label">规格</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" disabled class="tpl-form-input cus_form_input" name="spec"
+                                       id="s_spec"
+                                >
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="s_manufacturer" class="am-u-sm-3 am-form-label">生产厂商</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" class="tpl-form-input cus_form_input" name="manufacturer"
+                                       id="s_manufacturer">
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="s_mTeleNumber" class="am-u-sm-3 am-form-label">厂家联系电话</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" disabled class="tpl-form-input cus_form_input" name="mTeleNumber"
+                                       id="s_mTeleNumber">
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="s_purpose" class="am-u-sm-3 am-form-label">用途</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" disabled class="tpl-form-input cus_form_input" name="purpose"
+                                       id="s_purpose"
+                                >
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="s_desc" class="am-u-sm-3 am-form-label">说明</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" disabled class="tpl-form-input cus_form_input" name="desc"
+                                       id="s_desc"
+                                >
+                            </div>
+                        </div>
+
+                    </form>
+                    <div class="am-u-sm-12">
+
+                        <table width="100%"
+                               class="am-table am-table-compact tpl-table-black am-table-hover am-table-bordered am-table-radius"
+                               id="take_record_r">
+                            <thead>
+                            <tr>
+                                <th style="width: 20%">使用人</th>
+                                <th style="width: 20% ">数量</th>
+                                <th style="width: 20%">出库时间</th>
+                                <th style="width: 40% ">备注</th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            <!-- more data -->
+                            </tbody>
+                        </table>
+                        <div class="am-u-lg-12 am-cf">
+
+                            <div class="am-fr">
+
+                                <ul id="use_page_ul" class="am-pagination tpl-pagination">
+                                    <li>
+                                        <div class="p_total_size" style="display: inline">共0条,0页</div>
+                                    </li>
+                                    <li><a href="javascript:void(0);" class="am-btn p_first_page">首页</a></li>
+                                    <li><a href="javascript:void(0);" class="am-btn p_pre_page">«</a></li>
+                                    <li class="am-active"><a href="javascript:void(0);" class="p_current_size">0</a>
+                                    </li>
+                                    <li><a href="javascript:void(0);" class="am-btn p_next_page">»</a></li>
+                                    <li><a href="javascript:void(0);" class="am-btn p_last_page">尾页</a></li>
+                                    <li>
+                                        <div>到第<input type="text" class="tpl-form-input p_jump_input"
+                                                      style="width: 30px" name="pageNum" id="u_pageNum">页
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <button id="u_jumpTo" type="button"
+                                                class="p_jump_to am-btn am-btn-default am-btn-xs am-btn-success"></span>
+                                            确定
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="am-modal am-modal-no-btn" tabindex="-1" id="minus-proIn-modal">
+        <div class="am-modal-dialog cus_modal_div">
+            <div class="am-modal-hd text-color">使用库存
+                <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+            </div>
+            <div class="am-modal-bd">
+                <div class="widget-body am-fr">
+
+                    <form class="am-form tpl-form-line-form">
+                        <div class="am-form-group">
+                            <label for="id_productNo" class="am-u-sm-3 am-form-label">物料编码</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" disabled class="tpl-form-input cus_form_input" name="productNo"
+                                       id="id_productNo"
+                                >
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="id_proName" class="am-u-sm-3 am-form-label">物资名称</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" disabled class="tpl-form-input cus_form_input" name="proName"
+                                       id="id_proName"
+                                >
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="id_inventoryNum" class="am-u-sm-3 am-form-label">库存值</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" disabled class="tpl-form-input cus_form_input" name="inventoryNum"
+                                       id="id_inventoryNum"
+                                >
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="userName" class="am-u-sm-3 am-form-label">使用人姓名</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" class="tpl-form-input cus_form_input" name="userName" id="userName"
+                                       placeholder="请输入使用人姓名">
+                                <input type="hidden" name="proId" id="proId">
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="minusNum" class="am-u-sm-3 am-form-label">领取数量</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" class="tpl-form-input cus_form_input" name="minusNum" id="minusNum"
+                                       placeholder="请输入领取数量">
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="remark" class="am-u-sm-3 am-form-label">备注</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" class="tpl-form-input cus_form_input" name="remark" id="remark"
+                                       placeholder="请输入备注">
+                            </div>
+                        </div>
+
+
+                        <div class="am-form-group">
+                            <div class="am-u-sm-9 am-u-sm-push-2">
+                                <button type="button" id="minus_prod_btn"
+                                        class="am-btn am-btn-primary tpl-btn-bg-color-success ">使用
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+</div>
+
+<script src="assets/js/amazeui.min.js"></script>
+<script src="assets/js/amazeui.datatables.min.js"></script>
+<script src="assets/js/dataTables.responsive.min.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+    $(function () {
+        showUser();
+        console.log("ddddd");
+        var columns = [{"data": "productNo"},
+            {"data": "name"},
+            {"data": "unit"},
+            {"data": "unitCost"},
+            {"data": "inventoryNum"},
+            {"data": "productModel"},
+            {"data": "manufacturer"},
+            {
+                "data": null, render: function (data, type, row, meta) {
+                    var rowIndex = meta.row;
+                    return "<div class=\"am-btn-group am-btn-group-xs\">\n" +
+                        "                                                <button type=\"button\" onclick='showUse(" + rowIndex + ",event)' class=\"am-btn am-btn-default am-btn-secondary\"><span class=\"am-icon-minus\"></span> 出库</button>\n" +
+                        "                                                <button type=\"button\" onclick='showModify(" + rowIndex + ",event)' class=\"am-btn am-btn-default am-btn-warning\"><span class=\"am-icon-pencil\"></span> 编辑</button>\n" +
+                        "                                                <button type=\"button\" onclick='del(" + rowIndex + ",event)' class=\"am-btn am-btn-default am-btn-danger\"><span class=\"am-icon-trash-o\"></span> 删除</button>\n" +
+                        "                                            </div>"
+                }
+            }
+        ];
+        var $table = $('#example-r').DataTable({
+            bInfo: false, //页脚信息
+            dom: 'ti',
+            columns: columns
+        });
+
+        var useColumns = [{"data": "userName", "width": "20%"},
+            {"data": "num", "width": "20%"}, {"data": "createDate", "width": "20%"},
+            {
+                "data": "remark", "width": "40%", render: function (data, type, row, meta) {
+
+                    var $data = data;
+                    if (null != $data && $data.length > 20) {
+                        $data = data.substr(0, 20) + "...";
+                    }
+                    return '<span title="' + data + '">' + $data + '</span>';
+
+                }
+            }
+        ];
+        var $useTable = $('#take_record_r').DataTable({
+            bInfo: false, //页脚信息
+            dom: 'ti',
+            columns: useColumns
+        });
+
+        $('#add_btn').click(function () {
+
+            $('#add-proIn-modal').modal();
+            swithModalTheme();
+        });
+        renderTable($table, "/api/proInventory/list", {"pageNumber": "0"}, $("#page_ul"));
+
+        $("#add_prod_btn").click(function () {
+            var inputs = $(".add_form .cus_form_input");
+            var data = {};
+            $.each(inputs, function (i, n) {
+                var $ip = $(n);
+                data[$ip.attr("name")] = $ip.val();
+            });
+            $.post("/api/proInventory/add", data, function (result) {
+                console.log(result);
+                renderTable($table, "/api/proInventory/list", {}, $("#page_ul"));
+                $('#add-proIn-modal').modal("close");
+            });
+
+        });
+
+        $("#page_ul .p_first_page").click(function () {
+
+            console.log("p_first_page");
+            var params = toPageParams(0);
+            renderTable($table, "/api/proInventory/list", params, $("#page_ul"));
+        });
+
+        $("#page_ul .p_last_page").click(function () {
+            console.log("p_last_page");
+            var totalPages = $("#page_ul").attr("totalPages");
+            var pageNumber = 0;
+            if (null == totalPages) {
+                pageNumber = 0;
+            }
+            else {
+                pageNumber = totalPages - 1;
+            }
+            var params = toPageParams(pageNumber);
+            renderTable($table, "/api/proInventory/list", params, $("#page_ul"));
+        });
+
+        $("#page_ul .p_pre_page").click(function () {
+            console.log("p_pre_page");
+            var currentPage = $("#page_ul").attr("currentPage");
+            if (null == currentPage) {
+                currentPage = 0;
+            }
+            var pageNumber = 0;
+            if (currentPage <= 0) {
+                pageNumber = 0;
+            }
+            else {
+                pageNumber = parseInt(currentPage, 10) - 1;
+            }
+            var params = toPageParams(pageNumber);
+            renderTable($table, "/api/proInventory/list", params, $("#page_ul"));
+        });
+
+        $("#page_ul .p_next_page").click(function () {
+            console.log("p_next_page");
+
+            var currentPage = $("#page_ul").attr("currentPage");
+            console.log(currentPage);
+            if (null == currentPage) {
+                currentPage = 0;
+            }
+            var pageNumber = 0;
+            if (currentPage < 0) {
+                pageNumber = 0;
+            }
+            else {
+                pageNumber = parseInt(currentPage, 10) + 1;
+            }
+            var params = toPageParams(pageNumber);
+            renderTable($table, "/api/proInventory/list", params, $("#page_ul"));
+        });
+
+        $("#page_ul .p_jump_to").click(function () {
+            console.log("p_jump_to");
+
+            var pageNumber = $("#page_ul .p_jump_input").val();
+            if (null == pageNumber || "" == pageNumber.trim()) {
+                return;
+            }
+            var pageNumber = parseInt(pageNumber, 10) - 1;
+            var params = toPageParams(pageNumber);
+            renderTable($table, "/api/proInventory/list", params, $("#page_ul"));
+        });
+
+
+        $("#search_btn").click(function () {
+            var params = toPageParams(0);
+            renderTable($table, "/api/proInventory/list", params, $("#page_ul"));
+        });
+
+
+        $("#minus_prod_btn").click(function () {
+            useProd();
+        });
+
+        $("#edit_prod_btn").click(function () {
+            modify();
+        });
+
+        $("#example-r").on('click','tbody tr td:not(:last-child)',(function () {
+            console.log($("#example-r tbody tr"));
+            $table.$('tr.proSelected').removeClass('proSelected');
+            $(this).parent("tr").addClass('proSelected');
+            var $data = $table.row('.proSelected').data();
+            console.log($data);
+            showDetail($data);
+        }));
+
+
+        $("#use_page_ul .p_first_page").click(function () {
+
+            console.log("p_first_page");
+            var params = toShowPageParams(0);
+            renderTable($useTable, "/api/proInventory/listUseRecord", params, $("#use_page_ul"));
+        });
+
+        $("#use_page_ul .p_last_page").click(function () {
+            console.log("p_last_page");
+            var totalPages = $("#use_page_ul").attr("totalPages");
+            var pageNumber = 0;
+            if (null == totalPages) {
+                pageNumber = 0;
+            }
+            else {
+                pageNumber = totalPages - 1;
+            }
+            var params = toShowPageParams(pageNumber);
+            renderTable($useTable, "/api/proInventory/listUseRecord", params, $("#use_page_ul"));
+        });
+
+        $("#use_page_ul .p_pre_page").click(function () {
+            console.log("p_pre_page");
+            var currentPage = $("#use_page_ul").attr("currentPage");
+            if (null == currentPage) {
+                currentPage = 0;
+            }
+            var pageNumber = 0;
+            if (currentPage <= 0) {
+                pageNumber = 0;
+            }
+            else {
+                pageNumber = parseInt(currentPage, 10) - 1;
+            }
+            var params = toShowPageParams(pageNumber);
+            renderTable($useTable, "/api/proInventory/listUseRecord", params, $("#use_page_ul"));
+        });
+
+        $("#use_page_ul .p_next_page").click(function () {
+            console.log("p_next_page");
+
+            var currentPage = $("#use_page_ul").attr("currentPage");
+            console.log(currentPage);
+            if (null == currentPage) {
+                currentPage = 0;
+            }
+            var pageNumber = 0;
+            if (currentPage < 0) {
+                pageNumber = 0;
+            }
+            else {
+                pageNumber = parseInt(currentPage, 10) + 1;
+            }
+            var params = toShowPageParams(pageNumber);
+            renderTable($useTable, "/api/proInventory/listUseRecord", params, $("#use_page_ul"));
+        });
+
+        $("#use_page_ul .p_jump_to").click(function () {
+            console.log("p_jump_to");
+
+            var pageNumber = $("#use_page_ul .p_jump_input").val();
+            if (null == pageNumber || "" == pageNumber.trim()) {
+                return;
+            }
+            var pageNumber = parseInt(pageNumber, 10) - 1;
+            var params = toShowPageParams(pageNumber);
+            renderTable($useTable, "/api/proInventory/listUseRecord", params, $("#use_page_ul"));
+        });
+
+
+    })
+
+    function showDetail($data) {
+        $('#show-proIn-modal').modal({width: 800});
+        console.log("showDetail");
+        console.log($data);
+        $("#s_address").val($data.address);
+        $("#s_desc").val($data.desc);
+        $("#s_inventoryNum").val($data.inventoryNum);
+        $("#s_manufacturer").val($data.manufacturer);
+        $("#s_mTeleNumber").val($data.mTeleNumber);
+        $("#s_name").val($data.name);
+        $("#s_num").val($data.num);
+        $("#s_productModel").val($data.productModel);
+        $("#s_productNo").val($data.productNo);
+        $("#s_purpose").val($data.purpose);
+        $("#s_spec").val($data.spec);
+        $("#s_unit").val($data.unit);
+        $("#s_unitCost").val($data.unitCost);
+        $("#s_id").val($data.id);
+        swithModalTheme();
+
+        var $useTable = $('#take_record_r').DataTable();
+        $useTable.clear();
+        renderTable($useTable, "/api/proInventory/listUseRecord", {"proId": $data.id}, $("#use_page_ul"));
+    }
+
+    function toShowPageParams(pageNumber) {
+        return {"proId": $("#s_id").val(), "pageNumber": pageNumber};
+    }
+
+    function toPageParams(pageNumber) {
+
+        var searchType = $("#searchType").val();
+        var searchValue = $("#searchValue").val();
+        if (null == searchType) {
+            searchType = "";
+        }
+        if (null == searchValue) {
+            searchValue = "";
+        }
+
+        if (null == pageNumber) {
+            pageNumber = 0;
+        }
+
+        return {"searchType": searchType, "searchValue": searchValue, "pageNumber": pageNumber};
+    }
+
+    function showUse(rowIndex,event) {
+        console.log(arguments);
+        $('#minus-proIn-modal').modal();
+        var $table = $('#example-r').DataTable();
+        var $data = $table.row(rowIndex).data();
+        console.log("showUse");
+        console.log($data);
+        $("#id_productNo").val($data.productNo);
+        $("#id_proName").val($data.name);
+        $("#id_inventoryNum").val($data.inventoryNum);
+
+        $("#proId").val($data.id);
+        $("#userName").val('');
+        $("#minusNum").val("");
+        $("#remark").val('');
+
+        swithModalTheme();
+    }
+
+    function showModify(rowIndex) {
+        $('#edit-proIn-modal').modal();
+        var $table = $('#example-r').DataTable();
+        var $data = $table.row(rowIndex).data();
+        console.log("showModify");
+        console.log($data);
+        $("#e_address").val($data.address);
+        $("#e_desc").val($data.desc);
+        $("#e_inventoryNum").val($data.inventoryNum);
+        $("#e_manufacturer").val($data.manufacturer);
+        $("#e_mTeleNumber").val($data.mTeleNumber);
+        $("#e_name").val($data.name);
+        $("#e_num").val($data.num);
+        $("#e_productModel").val($data.productModel);
+        $("#e_productNo").val($data.productNo);
+        $("#e_purpose").val($data.purpose);
+        $("#e_spec").val($data.spec);
+        $("#e_unit").val($data.unit);
+        $("#e_unitCost").val($data.unitCost);
+        $("#e_id").val($data.id);
+        swithModalTheme();
+
+        return false;
+    }
+
+    function useProd() {
+
+        var r = confirm("确认出库?")
+        if (r == false) {
+            return;
+        }
+        var proId = $("#proId").val();
+        var userName = $("#userName").val();
+        var minusNum = $("#minusNum").val();
+        var remark = $("#remark").val();
+        var data = {"proId": proId, "userName": userName, "type": "1", "num": minusNum, "remark": remark};
+        $.post("/api/proInventory/use", data, function (result) {
+            console.log(result);
+            if ("0" != result.code) {
+                alert(result.msg);
+                //$('#minus-proIn-modal').modal("close");
+                return;
+            }
+            var currentPage = $("#page_ul").attr("currentPage");
+            var pageNumber = parseInt(currentPage, 10);
+            var params = toPageParams(pageNumber);
+            var $table = $('#example-r').DataTable();
+            renderTable($table, "/api/proInventory/list", params, $("#page_ul"));
+            $('#minus-proIn-modal').modal("close");
+
+        });
+    }
+
+    function modify() {
+        var inputs = $(".edit_form .cus_form_input");
+        var data = {};
+        $.each(inputs, function (i, n) {
+            var $ip = $(n);
+            data[$ip.attr("name")] = $ip.val();
+        });
+        $.post("/api/proInventory/modify", data, function (result) {
+            console.log(result);
+            if ("0" != result.code) {
+                alert(result.msg);
+                return;
+            }
+            var $table = $('#example-r').DataTable();
+            renderTable($table, "/api/proInventory/list", {}, $("#page_ul"));
+            $('#edit-proIn-modal').modal("close");
+        });
+    }
+
+    function del(rowIndex) {
+
+        var r = confirm("确认删除该库存信息?")
+        if (r == false) {
+            return;
+        }
+
+
+        var $table = $('#example-r').DataTable();
+        var $data = $table.row(rowIndex).data();
+
+        var proId = $data.id;
+        var data = {"id": proId};
+        $.post("/api/proInventory/del", data, function (result) {
+            console.log(result);
+            if ("0" != result.code) {
+                alert(result.msg);
+                return;
+            }
+            var params = toPageParams(0);
+            var $table = $('#example-r').DataTable();
+            renderTable($table, "/api/proInventory/list", params, $("#page_ul"));
+
+        });
+        return false;
+
+    }
+</script>
+</body>
+
+</html>
