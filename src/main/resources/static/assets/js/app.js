@@ -1,3 +1,4 @@
+
 $(function () {
     // 读取body data-type 判断是哪个页面然后执行相应页面方法，方法在下面。
     var dataType = $('body').attr('data-type');
@@ -161,12 +162,13 @@ function showUser() {
                 if (null != user.imgUrl && "" != user.imgUrl) {
                     $("#user_img_id").attr("src", user.imgUrl);
                 }
+                window.tempUserId = result.tempUserId;
             }
             else {
                 location.href = "/login.html";
             }
         },
-        fail: function () {
+        error: function () {
             location.href = "/login.html";
         }
     });

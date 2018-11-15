@@ -20,6 +20,8 @@ public class UserController extends BaseController {
         {
             throw new IllegalStateException("SESSION不存在！");
         }
-        return  toSuccess(u);
+        Map<String, Object> result = toSuccess(u);
+        result.put("tempUserId",session.getId());
+        return  result;
     }
 }

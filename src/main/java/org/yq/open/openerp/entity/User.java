@@ -1,17 +1,15 @@
 package org.yq.open.openerp.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name="t_user")
 public class User {
 
     @Id
-    @Column(name = "id",length = 100)
-    private  String id;
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private  Long id;
 
 
     @Column(name = "user_name",length = 100)
@@ -26,11 +24,11 @@ public class User {
     @Column(name = "account",length = 100)
     private String account;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
