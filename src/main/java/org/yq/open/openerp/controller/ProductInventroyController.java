@@ -138,7 +138,7 @@ public class ProductInventroyController extends BaseController {
             if (rl < 0) {
                 return toError("-1", "库存不够！");
             }
-            pi.setInventoryNum(subtract(pi.getInventoryNum(), data.getNum()));
+            pi.setInventoryNum(rl);
             data.setId(UUID.randomUUID().toString());
             useRecordRepository.saveAndFlush(data);
             productInventoryRepository.saveAndFlush(pi);
@@ -147,6 +147,38 @@ public class ProductInventroyController extends BaseController {
             return toError("-1", "无该产品库存信息！");
         }
 
+    }
+
+    @RequestMapping("/addMoreProd")
+    public Map<String, Object> addMoreProd(UseRecord data) {
+        data.setCreateDate(new Date());
+        data.setUpdateDate(new Date());
+        Optional<ProductInventory> op = productInventoryRepository.findById(data.getProId());
+
+        if (op.isPresent()) {
+            ProductInventory pi = op.get();
+            long rl = add(pi.getInventoryNum(), data.getNum());
+
+            pi.setInventoryNum(rl);
+            data.setId(UUID.randomUUID().toString());
+            useRecordRepository.saveAndFlush(data);
+            productInventoryRepository.saveAndFlush(pi);
+            return toSuccess(null);
+        } else {
+            return toError("-1", "无该产品库存信息！");
+        }
+
+    }
+
+    private long add(Long inventoryNum, Long num) {
+        if (null == inventoryNum) {
+            return num;
+        }
+        if (null == num) {
+            return inventoryNum;
+        }
+
+        return inventoryNum + num;
     }
 
     @RequestMapping("/listUseRecord")
@@ -204,19 +236,21 @@ public class ProductInventroyController extends BaseController {
             Map<String, Short> titles = readTitles(sheet.getRow(firstRowNum));
             List<ProductInventory> pis = readProducts(sheet, titles);
 
-
-            importFileToDB(pis, u);
-
-
             LOGGER.info("titles:{}", titles);
+            Map<String,Object> result = importFileToDB(pis, u);
+
+            return toSuccess(result);
+
         }
 
-        return toSuccess(null);
+        return toError("-1","导入失败!");
     }
 
-    private void importFileToDB(List<ProductInventory> pis, User u) {
+    private Map<String,Object> importFileToDB(List<ProductInventory> pis, User u) {
 
         List<ProductInventory> newProds = new ArrayList<>();
+        int addNum = 0;
+        int modifyNum = 0;
         for (ProductInventory pi : pis) {
             List<ProductInventory> dbProds = productInventoryRepository.findByProductNoAndUserId(pi.getProductNo(), u.getId());
 
@@ -226,6 +260,7 @@ public class ProductInventroyController extends BaseController {
                 pi.setUpdateDate(new Date());
                 pi.setCreateDate(new Date());
                 newProds.add(pi);
+                addNum = addNum +1;
             } else {
                 ProductInventory dbProd = dbProds.get(0);
                 pi.setId(dbProd.getId());
@@ -233,9 +268,14 @@ public class ProductInventroyController extends BaseController {
                 pi.setCreateDate(dbProd.getCreateDate());
                 pi.setUpdateDate(new Date());
                 newProds.add(pi);
+                modifyNum = modifyNum + 1;
             }
         }
+        Map<String,Object> result = new HashMap<>();
+        result.put("addNum",addNum);
+        result.put("modifyNum",modifyNum);
         productInventoryRepository.saveAll(newProds);
+        return result;
     }
 
     private List<ProductInventory> readProducts(Sheet sheet, Map<String, Short> titles) {

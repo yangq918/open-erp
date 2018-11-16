@@ -173,3 +173,29 @@ function showUser() {
         }
     });
 }
+
+
+function isEndOf(str, target)
+{
+    if(null==str)
+    {
+        if(null==target)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    var start = str.length-target.length;
+    if(start<0)
+    {
+        return false;
+    }
+    var arr = str.substr(start,target.length);
+    if(arr == target) {
+        return true;
+    }
+    return false;
+}

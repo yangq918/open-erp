@@ -51,7 +51,7 @@
 
                     <!-- 退出 -->
                     <li class="am-text-sm">
-                        <a href="javascript:void(0);"  id="logout_a">
+                        <a href="javascript:void(0);" id="logout_a">
                             <span class="am-icon-sign-out"></span> 退出
                         </a>
                     </li>
@@ -80,7 +80,7 @@
         <div class="tpl-sidebar-user-panel">
             <div class="tpl-user-panel-slide-toggleable">
                 <div class="tpl-user-panel-profile-picture">
-                    <img  id="user_img_id"  src="assets/img/user02.png" alt="">
+                    <img id="user_img_id" src="assets/img/user02.png" alt="">
                 </div>
                 <span class="user-panel-logged-in-text">
               <i class="am-icon-circle-o am-text-success tpl-user-panel-status-icon"></i>
@@ -140,11 +140,9 @@
                                         <button id="add_btn" type="button" class="am-btn am-btn-default am-btn-success"><span
                                                 class="am-icon-plus"></span> 新增
                                         </button>
-                                        <button id="import_btn" type="button" class="am-btn am-btn-default am-btn-secondary"><span
+                                        <button id="import_btn" type="button"
+                                                class="am-btn am-btn-default am-btn-secondary"><span
                                                 class="am-icon-upload"></span> 导入
-                                        </button>
-                                        <button id="export_btn" type="button" class="am-btn am-btn-default am-btn-warning"><span
-                                                class="am-icon-download"></span> 导出
                                         </button>
                                     </div>
                                 </div>
@@ -554,10 +552,11 @@
                                id="take_record_r">
                             <thead>
                             <tr>
-                                <th style="width: 20%">使用人</th>
-                                <th style="width: 20% ">数量</th>
+                                <th style="width: 15%">使用人</th>
+                                <th style="width: 15% ">数量</th>
+                                <th style="width: 15% ">操作类型</th>
                                 <th style="width: 20%">出库时间</th>
-                                <th style="width: 40% ">备注</th>
+                                <th style="width: 35% ">备注</th>
 
                             </tr>
                             </thead>
@@ -668,6 +667,76 @@
             </div>
         </div>
     </div>
+    <div class="am-modal am-modal-no-btn" tabindex="-1" id="add-moreProIn-modal">
+        <div class="am-modal-dialog cus_modal_div">
+            <div class="am-modal-hd text-color">增加库存数量
+                <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+            </div>
+            <div class="am-modal-bd">
+                <div class="widget-body am-fr">
+
+                    <form class="am-form tpl-form-line-form">
+                        <div class="am-form-group">
+                            <label for="am_productNo" class="am-u-sm-3 am-form-label">物料编码</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" disabled class="tpl-form-input cus_form_input" name="productNo"
+                                       id="am_productNo"
+                                >
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="am_proName" class="am-u-sm-3 am-form-label">物资名称</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" disabled class="tpl-form-input cus_form_input" name="proName"
+                                       id="am_proName"
+                                >
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="am_inventoryNum" class="am-u-sm-3 am-form-label">库存值</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" disabled class="tpl-form-input cus_form_input" name="inventoryNum"
+                                       id="am_inventoryNum"
+                                >
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="am_userName" class="am-u-sm-3 am-form-label">使用人姓名</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" class="tpl-form-input cus_form_input" name="userName"
+                                       id="am_userName"
+                                       placeholder="请输入使用人姓名">
+                                <input type="hidden" name="proId" id="am_proId">
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="minusNum" class="am-u-sm-3 am-form-label">新增数量</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" class="tpl-form-input cus_form_input" name="addNum" id="am_addNum"
+                                       placeholder="请输入新增数量">
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="am_remark" class="am-u-sm-3 am-form-label">备注</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" class="tpl-form-input cus_form_input" name="remark" id="am_remark"
+                                       placeholder="请输入备注">
+                            </div>
+                        </div>
+
+
+                        <div class="am-form-group">
+                            <div class="am-u-sm-9 am-u-sm-push-2">
+                                <button type="button" id="add_moreProd_btn"
+                                        class="am-btn am-btn-primary tpl-btn-bg-color-success ">新增
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="am-modal am-modal-loading am-modal-no-btn" tabindex="-1" id="import-modal">
         <div class="am-modal-dialog cus_modal_div">
@@ -677,29 +746,32 @@
             <div class="am-modal-bd">
                 <div class="widget-body am-fr">
 
-                    <form class="am-form tpl-form-line-form"  method="post" action="/api/proInventory/import" target="uploadFrame" enctype="multipart/form-data">
+                    <form class="am-form tpl-form-line-form" id="import_form" method="post"
+                          action="/api/proInventory/import" target="uploadFrame" enctype="multipart/form-data">
                         <div class="am-form-group am-form-file">
                             <button type="button" class="am-btn am-btn-danger am-btn-sm">
-                                <i class="am-icon-cloud-upload"></i> 选择要上传的文件</button>
+                                <i class="am-icon-cloud-upload"></i> 选择要上传的文件
+                            </button>
                             <input id="doc-form-file" type="file" name="file" multiple>
                             <div id="file-list"></div>
                         </div>
 
                         <div class="am-form-group">
                             <div class="am-u-sm-9 am-u-sm-push-1">
-                                <button type="submit"  id="import_prod_btn"
+                                <button type="button" id="import_prod_btn"
                                         class="am-btn am-btn-primary tpl-btn-bg-color-success ">导入
                                 </button>
                             </div>
                         </div>
-                        <iframe id="uploadFrame" name="uploadFrame" src=""  style="display:none;" style="width: 0px" height="0px">
+                        <iframe id="uploadFrame" name="uploadFrame" src="" style="display:none;" style="width: 0px"
+                                height="0px">
                         </iframe>
                     </form>
                 </div>
+            </div>
         </div>
-    </div>
 
-</div>
+    </div>
 </div>
 </div>
 
@@ -710,7 +782,6 @@
 <script>
     $(function () {
         showUser();
-        console.log("ddddd");
         var columns = [{"data": "productNo"},
             {"data": "name"},
             {"data": "unit"},
@@ -722,7 +793,8 @@
                 "data": null, render: function (data, type, row, meta) {
                     var rowIndex = meta.row;
                     return "<div class=\"am-btn-group am-btn-group-xs\">\n" +
-                        "                                                <button type=\"button\" onclick='showUse(" + rowIndex + ",event)' class=\"am-btn am-btn-default am-btn-secondary\"><span class=\"am-icon-minus\"></span> 出库</button>\n" +
+                        "                                                <button type=\"button\" onclick='showUse(" + rowIndex + ",event)' class=\"am-btn am-btn-default am-btn-primary\"><span class=\"am-icon-minus\"></span> 出库</button>\n" +
+                        "                                                <button type=\"button\" onclick='showAddUse(" + rowIndex + ",event)' class=\"am-btn am-btn-default am-btn-secondary\"><span class=\"am-icon-minus\"></span> 入库</button>\n" +
                         "                                                <button type=\"button\" onclick='showModify(" + rowIndex + ",event)' class=\"am-btn am-btn-default am-btn-warning\"><span class=\"am-icon-pencil\"></span> 编辑</button>\n" +
                         "                                                <button type=\"button\" onclick='del(" + rowIndex + ",event)' class=\"am-btn am-btn-default am-btn-danger\"><span class=\"am-icon-trash-o\"></span> 删除</button>\n" +
                         "                                            </div>"
@@ -736,7 +808,17 @@
         });
 
         var useColumns = [{"data": "userName", "width": "20%"},
-            {"data": "num", "width": "20%"}, {"data": "createDate", "width": "20%"},
+            {"data": "num", "width": "20%"}, {
+                "data": "type", "width": "20%", render: function (data, type, row, meta) {
+                    var $data = data;
+                    if ("1" == $data) {
+                        return "出库";
+                    }
+                    else {
+                        return "入库";
+                    }
+                }
+            }, {"data": "createDate", "width": "20%"},
             {
                 "data": "remark", "width": "40%", render: function (data, type, row, meta) {
 
@@ -857,11 +939,15 @@
             useProd();
         });
 
+        $("#add_moreProd_btn").click(function () {
+            addMoreProd();
+        });
+
         $("#edit_prod_btn").click(function () {
             modify();
         });
 
-        $("#example-r").on('click','tbody tr td:not(:last-child)',(function () {
+        $("#example-r").on('click', 'tbody tr td:not(:last-child)', (function () {
             console.log($("#example-r tbody tr"));
             $table.$('tr.proSelected').removeClass('proSelected');
             $(this).parent("tr").addClass('proSelected');
@@ -942,21 +1028,93 @@
 
         $("#import_btn").click(function () {
             $('#import-modal').modal();
+            $("#import_prod_btn").removeAttr("disabled");
+            $('#file-list').html("");
+            $("#doc-form-file").val("");
             swithModalTheme();
         });
 
-        $('#doc-form-file').on('change', function() {
+        $('#doc-form-file').on('change', function () {
+
             var fileNames = '';
-            $.each(this.files, function() {
+            var flag = true;
+            var msg = "";
+            $.each(this.files, function () {
                 fileNames += '<span class="am-badge">' + this.name + '</span> ';
+                if (null == this.name) {
+                    flag = false;
+                    msg = "文件名为空";
+                    return;
+                }
+                var fileName = this.name.toLowerCase();
+
+                if (isEndOf(fileName, ".xlsx") || isEndOf(fileName, ".xls")) {
+
+                }
+                else {
+                    flag = false;
+                    msg = "只支持.xlsx和.xls文件!";
+                }
             });
+            if (!flag) {
+                alert(msg)
+
+                $('#file-list').html("");
+                $("#doc-form-file").val("");
+                return;
+            }
+            $("#import_prod_btn").removeAttr("disabled");
             $('#file-list').html(fileNames);
         });
 
+        $("#import_prod_btn").on("click", function () {
+            var filePath = $("#doc-form-file").val();
+            console.log(filePath);
+            if (!filePath) {
+                alert("请选择要上传的文件!");
+                return;
+            }
+            $("#import_form").submit();
+            $("#import_prod_btn").attr("disabled", "disabled");
+        });
 
+
+        var oFrm = document.getElementById("uploadFrame");
+        oFrm.onload = oFrm.onreadystatechange = function () {
+            if (this.readyState && this.readyState != "complete") {
+                return;
+            }
+            else {
+                //获取iframe里面的内容
+                var responseText = $('#uploadFrame')[0].contentDocument.body.textContent;
+                //上传完成后的处理
+                if (responseText != "") {
+                    var responseData = JSON.parse(responseText);
+                    console.log(responseData);
+                    if (null == responseData) {
+                        alert("导入出现异常");
+                        $("#import_prod_btn").removeAttr("disabled");
+                        return;
+                    }
+                    if (responseData.code != '0') {
+                        alert(responseData.msg);
+                        $("#import_prod_btn").removeAttr("disabled");
+                        return;
+                    }
+                    else {
+                        var rData = responseData.data;
+                        var addNum = rData.addNum;
+                        var modifyNum = rData.modifyNum;
+                        alert("导入成功，新增数:" + addNum + ",修改数:" + modifyNum);
+                    }
+                }
+                $("#import_prod_btn").removeAttr("disabled");
+            }
+        }
 
 
     })
+
 
     function showDetail($data) {
         $('#show-proIn-modal').modal({width: 800});
@@ -1005,7 +1163,7 @@
         return {"searchType": searchType, "searchValue": searchValue, "pageNumber": pageNumber};
     }
 
-    function showUse(rowIndex,event) {
+    function showUse(rowIndex, event) {
         console.log(arguments);
         $('#minus-proIn-modal').modal();
         var $table = $('#example-r').DataTable();
@@ -1020,6 +1178,25 @@
         $("#userName").val('');
         $("#minusNum").val("");
         $("#remark").val('');
+
+        swithModalTheme();
+    }
+
+    function showAddUse(rowIndex, event) {
+        console.log(arguments);
+        $('#add-moreProIn-modal').modal();
+        var $table = $('#example-r').DataTable();
+        var $data = $table.row(rowIndex).data();
+        console.log("showAddUse");
+        console.log($data);
+        $("#am_productNo").val($data.productNo);
+        $("#am_proName").val($data.name);
+        $("#am_inventoryNum").val($data.inventoryNum);
+
+        $("#am_proId").val($data.id);
+        $("#am_userName").val('');
+        $("#am_addNum").val("");
+        $("#am_remark").val('');
 
         swithModalTheme();
     }
@@ -1073,6 +1250,32 @@
             var $table = $('#example-r').DataTable();
             renderTable($table, "/api/proInventory/list", params, $("#page_ul"));
             $('#minus-proIn-modal').modal("close");
+
+        });
+    }
+
+    function addMoreProd() {
+        var r = confirm("确认入库?")
+        if (r == false) {
+            return;
+        }
+        var proId = $("#am_proId").val();
+        var userName = $("#am_userName").val();
+        var minusNum = $("#am_addNum").val();
+        var remark = $("#am_remark").val();
+        var data = {"proId": proId, "userName": userName, "type": "2", "num": minusNum, "remark": remark};
+        $.post("/api/proInventory/addMoreProd", data, function (result) {
+            console.log(result);
+            if ("0" != result.code) {
+                alert(result.msg);
+                return;
+            }
+            var currentPage = $("#page_ul").attr("currentPage");
+            var pageNumber = parseInt(currentPage, 10);
+            var params = toPageParams(pageNumber);
+            var $table = $('#example-r').DataTable();
+            renderTable($table, "/api/proInventory/list", params, $("#page_ul"));
+            $('#add-moreProIn-modal').modal("close");
 
         });
     }
