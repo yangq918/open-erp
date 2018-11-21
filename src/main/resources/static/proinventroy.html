@@ -105,6 +105,7 @@
             </li>
 
 
+
         </ul>
     </div>
 
@@ -794,7 +795,7 @@
                     var rowIndex = meta.row;
                     return "<div class=\"am-btn-group am-btn-group-xs\">\n" +
                         "                                                <button type=\"button\" onclick='showUse(" + rowIndex + ",event)' class=\"am-btn am-btn-default am-btn-primary\"><span class=\"am-icon-minus\"></span> 出库</button>\n" +
-                        "                                                <button type=\"button\" onclick='showAddUse(" + rowIndex + ",event)' class=\"am-btn am-btn-default am-btn-secondary\"><span class=\"am-icon-minus\"></span> 入库</button>\n" +
+                        "                                                <button type=\"button\" onclick='showAddUse(" + rowIndex + ",event)' class=\"am-btn am-btn-default am-btn-secondary\"><span class=\"am-icon-plus\"></span> 入库</button>\n" +
                         "                                                <button type=\"button\" onclick='showModify(" + rowIndex + ",event)' class=\"am-btn am-btn-default am-btn-warning\"><span class=\"am-icon-pencil\"></span> 编辑</button>\n" +
                         "                                                <button type=\"button\" onclick='del(" + rowIndex + ",event)' class=\"am-btn am-btn-default am-btn-danger\"><span class=\"am-icon-trash-o\"></span> 删除</button>\n" +
                         "                                            </div>"
@@ -804,6 +805,7 @@
         var $table = $('#example-r').DataTable({
             bInfo: false, //页脚信息
             dom: 'ti',
+            ordering: false,
             columns: columns
         });
 
@@ -834,6 +836,7 @@
         var $useTable = $('#take_record_r').DataTable({
             bInfo: false, //页脚信息
             dom: 'ti',
+            ordering: false,
             columns: useColumns
         });
 
@@ -1105,7 +1108,11 @@
                         var rData = responseData.data;
                         var addNum = rData.addNum;
                         var modifyNum = rData.modifyNum;
+                        var params = toPageParams(0);
+                        var $table = $('#example-r').DataTable();
+                        renderTable($table, "/api/proInventory/list", params, $("#page_ul"));
                         alert("导入成功，新增数:" + addNum + ",修改数:" + modifyNum);
+                        $('#import-modal').modal("close");
                     }
                 }
                 $("#import_prod_btn").removeAttr("disabled");
@@ -1164,6 +1171,7 @@
     }
 
     function showUse(rowIndex, event) {
+        $("#minus_prod_btn").removeAttr("disabled");
         console.log(arguments);
         $('#minus-proIn-modal').modal();
         var $table = $('#example-r').DataTable();
@@ -1183,6 +1191,7 @@
     }
 
     function showAddUse(rowIndex, event) {
+        $("#add_moreProd_btn").removeAttr("disabled");
         console.log(arguments);
         $('#add-moreProIn-modal').modal();
         var $table = $('#example-r').DataTable();
@@ -1232,12 +1241,14 @@
         if (r == false) {
             return;
         }
+        $("#minus_prod_btn").attr("disabled", "disabled");
         var proId = $("#proId").val();
         var userName = $("#userName").val();
         var minusNum = $("#minusNum").val();
         var remark = $("#remark").val();
         var data = {"proId": proId, "userName": userName, "type": "1", "num": minusNum, "remark": remark};
         $.post("/api/proInventory/use", data, function (result) {
+            $("#minus_prod_btn").removeAttr("disabled");
             console.log(result);
             if ("0" != result.code) {
                 alert(result.msg);
@@ -1259,12 +1270,15 @@
         if (r == false) {
             return;
         }
+        $("#add_moreProd_btn").attr("disabled", "disabled");
         var proId = $("#am_proId").val();
         var userName = $("#am_userName").val();
         var minusNum = $("#am_addNum").val();
         var remark = $("#am_remark").val();
         var data = {"proId": proId, "userName": userName, "type": "2", "num": minusNum, "remark": remark};
+
         $.post("/api/proInventory/addMoreProd", data, function (result) {
+            $("#add_moreProd_btn").removeAttr("disabled");
             console.log(result);
             if ("0" != result.code) {
                 alert(result.msg);

@@ -187,7 +187,6 @@ public class ProductInventroyController extends BaseController {
         UseRecord d = new UseRecord();
         d.setProId(proId);
         Example<UseRecord> ex = Example.of(d);
-
         if (pageNumber == null) {
             pageNumber = 0;
         }
@@ -285,7 +284,7 @@ public class ProductInventroyController extends BaseController {
         for (int i = (firstRowNum + 1); i <= lastRowNum; i++) {
             Row row = sheet.getRow(i);
             if (null == row) {
-                break;
+                continue;
             }
             ProductInventory p = readProduct(row, titles);
 
@@ -338,7 +337,12 @@ public class ProductInventroyController extends BaseController {
             return  null;
         }
         Cell c = row.getCell(s);
+        if(null==c)
+        {
+            return null;
+        }
         String str = null;
+
         if(c.getCellType() == CellType.NUMERIC)
         {
             DecimalFormat df = new DecimalFormat("#");

@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface ProductInventoryRepository extends JpaSpecificationExecutor<ProductInventory>, JpaRepository<ProductInventory,String> {
 
-    List<ProductInventory> findByProductNoAndUserId(String productNo,Long userId);
+    List<ProductInventory> findByProductNoAndUserId(String productNo,String userId);
 
 }

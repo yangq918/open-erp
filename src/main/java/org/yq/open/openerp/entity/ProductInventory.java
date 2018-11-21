@@ -16,8 +16,8 @@ public class ProductInventory implements Serializable {
     private  String id;
 
 
-    @Column(name="user_id")
-    private Long userId;
+    @Column(name="user_id",length = 100)
+    private String userId;
 
     /**
      * 物资编码
@@ -218,11 +218,11 @@ public class ProductInventory implements Serializable {
         this.updateDate = updateDate;
     }
 
-    public Long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 }
