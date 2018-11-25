@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="assets/css/fullcalendar.min.css"/>
     <link rel="stylesheet" href="assets/css/fullcalendar.print.css" media='print'/>
     <link rel="stylesheet" href="assets/css/app.css">
+    <link rel="stylesheet" href="assets/css/custom.css">
     <script src="assets/js/jquery.min.js"></script>
 
 </head>
@@ -107,7 +108,7 @@
                 </a>
             </li>
             <li class="sidebar-nav-heading">系统管理</li>
-            <li class="sidebar-nav-link">
+            <li class="sidebar-nav-link only_manage_menu">
                 <a href="users.html" class="active">
                     <i class="am-icon-users sidebar-nav-link-logo"></i> 账号管理
                 </a>
@@ -161,11 +162,11 @@
                         </div>
 
                         <div class="am-u-sm-12 am-u-md-12 am-u-lg-3">
-                            <div style="text-align: right;">账号姓名:</div>
+                            <div style="text-align: right;">账号/名称:</div>
                         </div>
                         <div class="am-u-sm-12 am-u-md-12 am-u-lg-3">
                             <div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">
-                                <input type="text" id="userName" class="am-form-field ">
+                                <input type="text" id="searchValue" class="am-form-field ">
                                 <span class="am-input-group-btn">
             <button id="search_btn" class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search"
                     type="button"></button>
@@ -179,7 +180,7 @@
                                 <thead>
                                 <tr>
                                     <th style="width: 20%">账号</th>
-                                    <th style="width: 20%">账号名称</th>
+                                    <th style="width: 20%">名称</th>
                                     <th style="width: 10%">账号类型</th>
                                     <th style="width: 20%">注册时间</th>
                                     <th style="width: 25%">操作</th>
@@ -225,6 +226,97 @@
             </div>
         </div>
     </div>
+    <div class="am-modal am-modal-no-btn" tabindex="-1" id="add-user-modal">
+        <div class="am-modal-dialog cus_modal_div">
+            <div class="am-modal-hd text-color">新增账号
+                <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+            </div>
+            <div class="am-modal-bd">
+                <div class="widget-body am-fr">
+
+                    <form class="am-form tpl-form-line-form add_form">
+                        <div class="am-form-group">
+                            <label for="a_account" class="am-u-sm-3 am-form-label">账号</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" class="tpl-form-input cus_form_input" name="account" id="a_account"
+                                       placeholder="请输入账号">
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="a_userName" class="am-u-sm-3 am-form-label">姓名</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" class="tpl-form-input cus_form_input" name="userName" id="a_userName"
+                                       placeholder="请输入姓名">
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="a_type" class="am-u-sm-3 am-form-label">账号类型</label>
+                            <div class="am-u-sm-9" style="text-align: left">
+                                <select id="a_type" name="type" data-am-selected>
+                                    <option value="0">管理员</option>
+                                    <option value="1">普通账号</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="am-form-group">
+                            <div class="am-u-sm-9 am-u-sm-push-2">
+                                <button type="button" id="add_user_btn"
+                                        class="am-btn am-btn-primary tpl-btn-bg-color-success ">提交
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="am-modal am-modal-no-btn" tabindex="-1" id="mod-pwd-modal">
+        <div class="am-modal-dialog cus_modal_div">
+            <div class="am-modal-hd text-color">重置密码
+                <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+            </div>
+            <div class="am-modal-bd">
+                <div class="widget-body am-fr">
+
+                    <form class="am-form tpl-form-line-form add_form">
+                        <div class="am-form-group">
+                            <label for="m_account" class="am-u-sm-3 am-form-label">账号</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" class="tpl-form-input cus_form_input" name="account" id="m_account"
+                                       >
+                                <input id="m_id" type="hidden" />
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="m_userName" class="am-u-sm-3 am-form-label">姓名</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" class="tpl-form-input cus_form_input" name="userName" id="m_userName"
+                                      >
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="m_userName" class="am-u-sm-3 am-form-label">密码</label>
+                            <div class="am-u-sm-9">
+                                <input type="password" class="tpl-form-input cus_form_input" name="password" id="m_password"
+                                       placeholder="请输入密码">
+                            </div>
+                        </div>
+
+
+                        <div class="am-form-group">
+                            <div class="am-u-sm-9 am-u-sm-push-2">
+                                <button type="button" id="mod_password_btn"
+                                        class="am-btn am-btn-primary tpl-btn-bg-color-success ">重置密码
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </div>
 <script src="assets/js/amazeui.min.js"></script>
@@ -255,9 +347,7 @@
 
                     var rowIndex = meta.row;
                     return "<div class=\"am-btn-group am-btn-group-xs\">\n" +
-                        "                                                <button type=\"button\" onclick='showUse(" + rowIndex + ",event)' class=\"am-btn am-btn-default am-btn-primary\"><span class=\"am-icon-minus\"></span> 出库</button>\n" +
-                        "                                                <button type=\"button\" onclick='showAddUse(" + rowIndex + ",event)' class=\"am-btn am-btn-default am-btn-secondary\"><span class=\"am-icon-minus\"></span> 入库</button>\n" +
-                        "                                                <button type=\"button\" onclick='showModify(" + rowIndex + ",event)' class=\"am-btn am-btn-default am-btn-warning\"><span class=\"am-icon-pencil\"></span> 编辑</button>\n" +
+                        "                                                <button type=\"button\" onclick='modifyPasswd(" + rowIndex + ",event)' class=\"am-btn am-btn-default am-btn-warning\"><span class=\"am-icon-pencil\"></span> 重置密码</button>\n" +
                         "                                                <button type=\"button\" onclick='del(" + rowIndex + ",event)' class=\"am-btn am-btn-default am-btn-danger\"><span class=\"am-icon-trash-o\"></span> 删除</button>\n" +
                         "                                            </div>"
                 }
@@ -266,10 +356,194 @@
         var $userTable = $('#users_table_id').DataTable({
             bInfo: false, //页脚信息
             dom: 'ti',
+            ordering: false,
             columns: userColumns
         });
         renderTable($userTable, "/api/user/listUser", {"pageNumber": "0"}, $("#page_ul"));
+
+        $("#add_btn").click(function () {
+            $('#add-user-modal').modal();
+            $("#a_account").val("");
+            $("#a_userName").val("");
+
+            $("#add_user_btn").removeAttr("disabled");
+            swithModalTheme();
+        });
+
+        $("#add_user_btn").click(function () {
+
+
+            var data = {
+                "userName": $("#a_userName").val(),
+                "password": "000000",
+                "account": $("#a_account").val(),
+                "type": $("#a_type").val()
+            };
+            $("#add_user_btn").attr("disabled", "disabled");
+            $.post("/api/user/addUser", data, function (result) {
+                $("#add_user_btn").removeAttr("disabled");
+                console.log(result);
+                if ("0" != result.code) {
+                    alert(result.msg);
+                    return;
+                }
+                renderTable($userTable, "/api/user/listUser", {"pageNumber": "0"}, $("#page_ul"));
+                $('#add-user-modal').modal("close");
+            });
+        });
+
+        $("#mod_password_btn").click(function () {
+            var data = {
+                "userId": $("#m_id").val(),
+                "passWord": $("#m_password").val()
+            };
+            $("#mod_password_btn").attr("disabled", "disabled");
+            $.post("/api/user/resetPassword", data, function (result) {
+                $("#mod_password_btn").removeAttr("disabled");
+                console.log(result);
+                if ("0" != result.code) {
+                    alert(result.msg);
+                    return;
+                }
+                alert("重置密码成功!")
+                $('#mod-pwd-modal').modal("close");
+            });
+        });
+        
+        $("#search_btn").click(function () {
+            var params = toPageParams(0);
+            renderTable($userTable, "/api/user/listUser", params, $("#page_ul"));
+        });
+
+
+        $("#page_ul .p_first_page").click(function () {
+
+            console.log("p_first_page");
+            var params = toPageParams(0);
+            renderTable($userTable, "/api/user/listUser", params, $("#page_ul"));
+        });
+
+        $("#page_ul .p_last_page").click(function () {
+            console.log("p_last_page");
+            var totalPages = $("#page_ul").attr("totalPages");
+            var pageNumber = 0;
+            if (null == totalPages) {
+                pageNumber = 0;
+            }
+            else {
+                pageNumber = totalPages - 1;
+            }
+            var params = toPageParams(pageNumber);
+            renderTable($userTable, "/api/user/listUser", params, $("#page_ul"));
+        });
+
+        $("#page_ul .p_pre_page").click(function () {
+            console.log("p_pre_page");
+            var currentPage = $("#page_ul").attr("currentPage");
+            if (null == currentPage) {
+                currentPage = 0;
+            }
+            var pageNumber = 0;
+            if (currentPage <= 0) {
+                pageNumber = 0;
+            }
+            else {
+                pageNumber = parseInt(currentPage, 10) - 1;
+            }
+            var params = toPageParams(pageNumber);
+            renderTable($userTable, "/api/user/listUser", params, $("#page_ul"));
+        });
+
+        $("#page_ul .p_next_page").click(function () {
+            console.log("p_next_page");
+
+            var currentPage = $("#page_ul").attr("currentPage");
+            console.log(currentPage);
+            if (null == currentPage) {
+                currentPage = 0;
+            }
+            var pageNumber = 0;
+            if (currentPage < 0) {
+                pageNumber = 0;
+            }
+            else {
+                pageNumber = parseInt(currentPage, 10) + 1;
+            }
+            var params = toPageParams(pageNumber);
+            renderTable($userTable, "/api/user/listUser", params, $("#page_ul"));
+        });
+
+        $("#page_ul .p_jump_to").click(function () {
+            console.log("p_jump_to");
+
+            var pageNumber = $("#page_ul .p_jump_input").val();
+            if (null == pageNumber || "" == pageNumber.trim()) {
+                return;
+            }
+            var pageNumber = parseInt(pageNumber, 10) - 1;
+            var params = toPageParams(pageNumber);
+            renderTable($userTable, "/api/user/listUser", params, $("#page_ul"));
+        });
     });
+
+
+    function modifyPasswd(rowIndex,event) {
+        $('#mod-pwd-modal').modal();
+        var $table = $('#users_table_id').DataTable();
+        var $data = $table.row(rowIndex).data();
+        console.log("modifyPasswd");
+        console.log($data);
+        $("#m_id").val($data.id);
+        $("#m_password").val("");
+        $("#m_account").val($data.account);
+        $("#m_userName").val($data.userName);
+        swithModalTheme();
+        $("#mod_password_btn").removeAttr("disabled");
+        return false;
+    }
+
+    function del(rowIndex) {
+
+        var r = confirm("确认删除该账号?")
+        if (r == false) {
+            return;
+        }
+
+
+        var $table = $('#users_table_id').DataTable();
+        var $data = $table.row(rowIndex).data();
+
+        var userId = $data.id;
+        var data = {"id": userId};
+        $.post("/api/user/del", data, function (result) {
+            console.log(result);
+            if ("0" != result.code) {
+                alert(result.msg);
+                return;
+            }
+            var params = toPageParams(0);
+            var $table = $('#users_table_id').DataTable();
+            renderTable($table, "/api/user/listUser", {"pageNumber": "0"}, $("#page_ul"));
+
+        });
+        return false;
+
+    }
+
+    function toPageParams(pageNumber) {
+
+        var searchValue = $("#searchValue").val();
+
+        if (null == searchValue) {
+            searchValue = "";
+        }
+
+        if (null == pageNumber) {
+            pageNumber = 0;
+        }
+
+        return {"searchValue": searchValue, "pageNumber": pageNumber};
+    }
 
 
 </script>

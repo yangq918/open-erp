@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="assets/css/fullcalendar.min.css" />
     <link rel="stylesheet" href="assets/css/fullcalendar.print.css" media='print' />
     <link rel="stylesheet" href="assets/css/app.css">
+    <link rel="stylesheet" href="assets/css/custom.css">
     <script src="assets/js/jquery.min.js"></script>
 
 </head>
@@ -110,7 +111,7 @@
                 </a>
             </li>
             <li class="sidebar-nav-heading">系统管理</li>
-            <li class="sidebar-nav-link">
+            <li class="sidebar-nav-link only_manage_menu">
                 <a href="users.html" >
                     <i class="am-icon-users sidebar-nav-link-logo"></i> 账号管理
                 </a>
@@ -132,7 +133,7 @@
         <div class="container-fluid am-cf">
             <div class="row">
                 <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
-                    <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span> 首页</div>
+                    <div class="page-header-heading"><span class="am-icon-user page-header-heading-icon"></span> 个人中心</div>
 
                 </div>
 
@@ -142,12 +143,151 @@
 
         <div class="row-content am-cf">
 
+            <div class="row">
 
+                <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+                    <div class="widget am-cf">
+                        <div class="widget-head am-cf">
+                            <div class="widget-title am-fl">账号详情</div>
+
+                        </div>
+                        <div class="widget-body am-fr">
+
+                            <form class="am-form tpl-form-line-form">
+                                <div class="am-form-group">
+                                    <label for="account" class="am-u-sm-3 am-form-label">账号 </label>
+                                    <div class="am-u-sm-9">
+                                        <input type="text" class="am-form-field tpl-form-no-bg" id="account" style="max-width: 500px" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="am-form-group">
+                                    <label for="userName" class="am-u-sm-3 am-form-label">姓名 </label>
+                                    <div class="am-u-sm-9">
+                                        <input type="text" class="am-form-field tpl-form-no-bg" style="max-width: 500px" id="userName" disabled>
+
+                                    </div>
+                                </div>
+
+                                <div class="am-form-group">
+                                    <label for="type" class="am-u-sm-3 am-form-label">账号类型 </label>
+                                    <div class="am-u-sm-9">
+                                        <input type="text" class="am-form-field tpl-form-no-bg" style="max-width: 500px" id="type" disabled>
+
+                                    </div>
+                                </div>
+
+
+                                <div class="am-form-group">
+                                    <label for="id_img_url" class="am-u-sm-3 am-form-label">头像 </label>
+                                    <div class="am-u-sm-9">
+                                        <div class="am-form-group am-form-file">
+                                            <div class="tpl-user-panel-profile-picture">
+                                                <img id="id_img_url" src="assets/img/user02.png" alt="">
+                                            </div>
+                                            <button type="button" id="show_mod_head_img" class="am-btn am-btn-danger am-btn-xs">
+                                                <i class="am-icon-cloud-upload"></i> 修改头像</button>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+                                <div class="am-form-group">
+                                    <div class="am-u-sm-9 am-u-sm-push-3">
+                                        <button type="button" id="do_mod_pwd_btn" class="am-btn am-btn-xs am-btn-primary tpl-btn-bg-color-success ">重置密码</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
 
 
 
         </div>
+
+    </div>
+    <div class="am-modal am-modal-no-btn" tabindex="-1" id="mod-pwd-modal">
+        <div class="am-modal-dialog cus_modal_div">
+            <div class="am-modal-hd text-color">重置密码
+                <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+            </div>
+            <div class="am-modal-bd">
+                <div class="widget-body am-fr">
+
+                    <form class="am-form tpl-form-line-form add_form">
+                        <div class="am-form-group">
+                            <label for="m_account" class="am-u-sm-3 am-form-label">账号</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" class="tpl-form-input cus_form_input" name="account" id="m_account"
+                                >
+                                <input id="m_id" type="hidden" />
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="m_userName" class="am-u-sm-3 am-form-label">姓名</label>
+                            <div class="am-u-sm-9">
+                                <input type="text" class="tpl-form-input cus_form_input" name="userName" id="m_userName"
+                                >
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="m_userName" class="am-u-sm-3 am-form-label">密码</label>
+                            <div class="am-u-sm-9">
+                                <input type="password" class="tpl-form-input cus_form_input" name="password" id="m_password"
+                                       placeholder="请输入密码">
+                            </div>
+                        </div>
+
+
+                        <div class="am-form-group">
+                            <div class="am-u-sm-9 am-u-sm-push-2">
+                                <button type="button" id="mod_password_btn"
+                                        class="am-btn am-btn-primary am-btn-xs tpl-btn-bg-color-success ">重置密码
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="am-modal am-modal-loading am-modal-no-btn" tabindex="-1" id="mod_head_img_modal">
+        <div class="am-modal-dialog cus_modal_div">
+            <div class="am-modal-hd text-color">修改头像
+                <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+            </div>
+            <div class="am-modal-bd">
+                <div class="widget-body am-fr">
+
+                    <form class="am-form tpl-form-line-form" id="import_form" method="post"
+                          action="/api/user/uploadImg" target="uploadFrame" enctype="multipart/form-data">
+                        <div class="am-form-group am-form-file">
+                            <button type="button" class="am-btn am-btn-danger am-btn-xs">
+                                <i class="am-icon-cloud-upload"></i> 选择要上传的图片
+                            </button>
+                            <input id="doc-form-file" type="file" name="file" multiple>
+                            <div id="file-list"></div>
+                        </div>
+
+                        <div class="am-form-group">
+                            <div class="am-u-sm-9 am-u-sm-push-1">
+                                <button type="button" id="mod_head_img_btn"
+                                        class="am-btn am-btn-xs am-btn-primary tpl-btn-bg-color-success ">上传头像
+                                </button>
+                            </div>
+                        </div>
+                        <iframe id="uploadFrame" name="uploadFrame" src="" style="display:none;" style="width: 0px"
+                                height="0px">
+                        </iframe>
+                    </form>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 </div>
@@ -162,6 +302,139 @@
     $(document).ready(function() {
         showUser();
 
+        var myUser = window.currentUser;
+        $("#account").val(myUser.account);
+        $("#userName").val(myUser.userName);
+        if ("1" == myUser.type) {
+            $("#type").val("普通账号");
+        }
+        else {
+            $("#type").val("管理员");
+        }
+
+        if (null != myUser.imgUrl && "" != myUser.imgUrl) {
+            $("#id_img_url").attr("src", myUser.imgUrl);
+        }
+
+        $("#do_mod_pwd_btn").click(function () {
+            $('#mod-pwd-modal').modal();
+            $("#m_id").val(myUser.id);
+            $("#m_password").val("");
+            $("#m_account").val(myUser.account);
+            $("#m_userName").val(myUser.userName);
+            swithModalTheme();
+            $("#mod_password_btn").removeAttr("disabled");
+            return false;
+        });
+
+        $("#mod_password_btn").click(function () {
+            var data = {
+                "userId": $("#m_id").val(),
+                "passWord": $("#m_password").val()
+            };
+            $("#mod_password_btn").attr("disabled", "disabled");
+            $.post("/api/user/resetPassword", data, function (result) {
+                $("#mod_password_btn").removeAttr("disabled");
+                console.log(result);
+                if ("0" != result.code) {
+                    alert(result.msg);
+                    return;
+                }
+                alert("重置密码成功,请重新登陆!")
+                logout();
+            });
+        });
+
+
+        $("#show_mod_head_img").click(function () {
+            $('#mod_head_img_modal').modal();
+            $("#mod_head_img_btn").removeAttr("disabled");
+            $('#file-list').html("");
+            $("#doc-form-file").val("");
+            swithModalTheme();
+        });
+
+        $('#doc-form-file').on('change', function () {
+
+            var fileNames = '';
+            var flag = true;
+            var msg = "";
+            $.each(this.files, function () {
+                fileNames += '<span class="am-badge">' + this.name + '</span> ';
+                if (null == this.name) {
+                    flag = false;
+                    msg = "文件名为空";
+                    return;
+                }
+                var fileName = this.name.toLowerCase();
+
+                if (isEndOf(fileName, ".jpg") || isEndOf(fileName, ".png")) {
+
+                }
+                else {
+                    flag = false;
+                    msg = "只支持.jpg和.png文件!";
+                }
+            });
+            if (!flag) {
+                alert(msg)
+
+                $('#file-list').html("");
+                $("#doc-form-file").val("");
+                return;
+            }
+            $("#mod_head_img_btn").removeAttr("disabled");
+            $('#file-list').html(fileNames);
+        });
+
+        $("#mod_head_img_btn").on("click", function () {
+            var filePath = $("#doc-form-file").val();
+            console.log(filePath);
+            if (!filePath) {
+                alert("请选择要上传的文件!");
+                return;
+            }
+            $("#import_form").submit();
+            $("#mod_head_img_btn").attr("disabled", "disabled");
+        });
+
+
+        var oFrm = document.getElementById("uploadFrame");
+        oFrm.onload = oFrm.onreadystatechange = function () {
+            if (this.readyState && this.readyState != "complete") {
+                return;
+            }
+            else {
+                //获取iframe里面的内容
+                var responseText = $('#uploadFrame')[0].contentDocument.body.textContent;
+                //上传完成后的处理
+                if (responseText != "") {
+                    var responseData = JSON.parse(responseText);
+                    console.log(responseData);
+                    if (null == responseData) {
+                        alert("修改头像出现异常");
+                        $("#mod_head_img_btn").removeAttr("disabled");
+                        return;
+                    }
+                    if (responseData.code != '0') {
+                        alert(responseData.msg);
+                        $("#import_prod_btn").removeAttr("disabled");
+                        return;
+                    }
+                    else {
+
+                        alert("修改成功!");
+                        $('#mod_head_img_modal').modal("close");
+                        showUser();
+                        var tempUser = window.currentUser;
+                        if (null != tempUser.imgUrl && "" != tempUser.imgUrl) {
+                            $("#id_img_url").attr("src", tempUser.imgUrl);
+                        }
+                    }
+                }
+                $("#import_prod_btn").removeAttr("disabled");
+            }
+        }
 
     });
 

@@ -21,6 +21,7 @@ import org.yq.open.openerp.entity.UseRecord;
 import org.yq.open.openerp.entity.User;
 import org.yq.open.openerp.repository.ProductInventoryRepository;
 import org.yq.open.openerp.repository.UseRecordRepository;
+import org.yq.open.openerp.repository.UserRepository;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -47,24 +48,61 @@ public class ProductInventroyController extends BaseController {
     @Autowired
     private UseRecordRepository useRecordRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
 
     @RequestMapping("/list")
     public Map<String, Object> list(@RequestParam(name = "pageNumber", required = false) Integer pageNumber, @RequestParam(name = "pageSize", required = false) Integer pageSize,
-                                    @RequestParam(name = "searchType", required = false) String searchType, @RequestParam(name = "searchValue", required = false) String searchValue) {
-        ExampleMatcher matcher = ExampleMatcher.matching();
-        ProductInventory param = new ProductInventory();
+                                    @RequestParam(name = "searchType", required = false) String searchType, @RequestParam(name = "searchValue", required = false) String searchValue,
+                                    HttpSession session) {
+        User u = (User) session.getAttribute("user");
+
         Specification<ProductInventory> spec = new Specification<ProductInventory>() {
 
             @Override
             public Predicate toPredicate(Root<ProductInventory> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                Predicate pu = null;
+                if(null!=u)
+                {
+                    if("1".equals(u.getType()))
+                    {
+                        pu = cb.equal(root.get("userId").as(String.class),u.getId());
+                    }
+                }
                 if (StringUtils.isNotBlank(searchType) && StringUtils.isNotBlank(searchValue)) {
+
+
                     if (StringUtils.equalsIgnoreCase(searchType, "all")) {
                         Predicate p1 = cb.like(root.get("productNo").as(String.class), "%" + searchValue + "%");
                         Predicate p2 = cb.like(root.get("manufacturer").as(String.class), "%" + searchValue + "%");
                         Predicate p3 = cb.like(root.get("name").as(String.class), "%" + searchValue + "%");
-                        query.where(cb.or(cb.or(p1, p2), p3));
+
+                        if(null==pu)
+                        {
+                            query.where(cb.or(cb.or(p1, p2), p3));
+                        }
+                        else
+                        {
+                            query.where(cb.and(pu,cb.or(cb.or(p1, p2), p3)));
+                        }
+
                     } else {
-                        query.where(cb.like(root.get(searchType).as(String.class), "%" + searchValue + "%"));
+                        if(null==pu)
+                        {
+                            query.where(cb.like(root.get(searchType).as(String.class), "%" + searchValue + "%"));
+                        }
+                        else
+                        {
+                            query.where(cb.and(pu,cb.like(root.get(searchType).as(String.class), "%" + searchValue + "%")));
+                        }
+
+                    }
+                }
+                else{
+                    if(null!=pu)
+                    {
+                        query.where(pu);
                     }
                 }
                 return null;
@@ -79,19 +117,66 @@ public class ProductInventroyController extends BaseController {
             pageSize = 10;
         }
 
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.Direction.DESC, "createDate");
 
 
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.Direction.DESC, "createDate","id");
+
+        Map<String,User> userMap = new HashMap<>();
         Page<ProductInventory> ls = productInventoryRepository.findAll(spec, pageable);
 
+        if(null!=ls)
+        {
+            List<ProductInventory> cls = ls.getContent();
+            if(null!=cls)
+            {
+                for(ProductInventory cl:cls)
+                {
+                    User tempUser = getUser(cl.getUserId(),userMap);
+                    if(null!=tempUser)
+                    {
+                        cl.setUserName(tempUser.getUserName());
+                    }
+                }
+            }
+        }
         return toSuccess(ls);
     }
 
+    private User getUser(String userId, Map<String, User> userMap) {
+        if(StringUtils.isEmpty(userId))
+        {
+            return null;
+        }
+        User u = userMap.get(userId);
+        if(null!=u)
+        {
+            return u;
+        }
+        Optional<User> op= userRepository.findById(userId);
+        if(!op.isPresent())
+        {
+            u = new User();
+            userMap.put(userId,u);
+            return  u;
+        }
+        else
+        {
+            u = op.get();
+            userMap.put(userId,u);
+            return u;
+        }
+    }
+
     @RequestMapping("/add")
-    public Map<String, Object> add(ProductInventory data) {
+    public Map<String, Object> add(ProductInventory data,HttpSession session) {
+        User u = (User) session.getAttribute("user");
+        if (null == u) {
+            throw new IllegalStateException("SESSION不存在！");
+        }
         data.setId(UUID.randomUUID().toString());
         data.setCreateDate(new Date());
         data.setUpdateDate(new Date());
+        data.setUserId(u.getId());
 
         productInventoryRepository.saveAndFlush(data);
 
@@ -120,6 +205,7 @@ public class ProductInventroyController extends BaseController {
             ProductInventory db = op.get();
             param.setUpdateDate(new Date());
             param.setCreateDate(db.getCreateDate());
+            param.setUserId(db.getUserId());
             productInventoryRepository.saveAndFlush(param);
             return toSuccess(op.get());
         }
@@ -236,16 +322,16 @@ public class ProductInventroyController extends BaseController {
             List<ProductInventory> pis = readProducts(sheet, titles);
 
             LOGGER.info("titles:{}", titles);
-            Map<String,Object> result = importFileToDB(pis, u);
+            Map<String, Object> result = importFileToDB(pis, u);
 
             return toSuccess(result);
 
         }
 
-        return toError("-1","导入失败!");
+        return toError("-1", "导入失败!");
     }
 
-    private Map<String,Object> importFileToDB(List<ProductInventory> pis, User u) {
+    private Map<String, Object> importFileToDB(List<ProductInventory> pis, User u) {
 
         List<ProductInventory> newProds = new ArrayList<>();
         int addNum = 0;
@@ -259,7 +345,7 @@ public class ProductInventroyController extends BaseController {
                 pi.setUpdateDate(new Date());
                 pi.setCreateDate(new Date());
                 newProds.add(pi);
-                addNum = addNum +1;
+                addNum = addNum + 1;
             } else {
                 ProductInventory dbProd = dbProds.get(0);
                 pi.setId(dbProd.getId());
@@ -270,9 +356,9 @@ public class ProductInventroyController extends BaseController {
                 modifyNum = modifyNum + 1;
             }
         }
-        Map<String,Object> result = new HashMap<>();
-        result.put("addNum",addNum);
-        result.put("modifyNum",modifyNum);
+        Map<String, Object> result = new HashMap<>();
+        result.put("addNum", addNum);
+        result.put("modifyNum", modifyNum);
         productInventoryRepository.saveAll(newProds);
         return result;
     }
@@ -332,24 +418,19 @@ public class ProductInventroyController extends BaseController {
 
     private String getStringField(Row row, Map<String, Short> titles, String title) {
         Short s = titles.get(title);
-        if(null==s)
-        {
-            return  null;
+        if (null == s) {
+            return null;
         }
         Cell c = row.getCell(s);
-        if(null==c)
-        {
+        if (null == c) {
             return null;
         }
         String str = null;
 
-        if(c.getCellType() == CellType.NUMERIC)
-        {
+        if (c.getCellType() == CellType.NUMERIC) {
             DecimalFormat df = new DecimalFormat("#");
             str = df.format(c.getNumericCellValue());
-        }
-        else
-        {
+        } else {
             str = c.getStringCellValue();
         }
 

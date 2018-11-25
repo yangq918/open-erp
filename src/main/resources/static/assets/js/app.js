@@ -42,6 +42,7 @@ $('.tpl-skiner-content-bar').find('span').on('click', function () {
     saveSelectColor.Color = $(this).attr('data-color');
     // 保存选择项
     storageSave(saveSelectColor);
+    swithModalTheme();
 
 })
 
@@ -149,6 +150,7 @@ function logout() {
 }
 
 function showUser() {
+
     $.ajax({
         url: '/api/user/showUser',
         type: 'post',
@@ -163,6 +165,7 @@ function showUser() {
                     $("#user_img_id").attr("src", user.imgUrl);
                 }
                 window.tempUserId = result.tempUserId;
+                window.currentUser = user;
             }
             else {
                 location.href = "/login.html";
@@ -172,6 +175,20 @@ function showUser() {
             location.href = "/login.html";
         }
     });
+    var tempUser = window.currentUser;
+    if(null!=tempUser)
+    {
+        if("1"==tempUser.type)
+        {
+            $(".only_manage_menu").hide();
+            $(".only_manage").hide();
+        }
+        else {
+            $(".only_normal").hide();
+        }
+
+    }
+
 }
 
 

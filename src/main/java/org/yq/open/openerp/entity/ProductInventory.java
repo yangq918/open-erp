@@ -82,6 +82,9 @@ public class ProductInventory implements Serializable {
     @Column(name = "update_date")
     private Date updateDate;
 
+    @Transient
+    private String userName;
+
     public String getId() {
         return id;
     }
@@ -224,5 +227,13 @@ public class ProductInventory implements Serializable {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }
