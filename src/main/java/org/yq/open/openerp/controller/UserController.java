@@ -39,6 +39,7 @@ public class UserController extends BaseController {
     @RequestMapping("/showUser")
     public Map<String, Object> showUser(HttpSession session) {
         User u = (User) session.getAttribute("user");
+        LOGGER.info("showUser:{}",u);
         if (null == u) {
             throw new IllegalStateException("SESSION不存在！");
         }

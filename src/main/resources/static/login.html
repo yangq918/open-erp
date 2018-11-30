@@ -93,7 +93,7 @@
                 $("#error_div").show();
                 return;
             }
-            var data = {"account":account,"password":password};
+            var data = {"account":account,"password":password,"remember-me":"true"};
             $.post("/api/user/login", data, function (result) {
                 console.log(result);
                 if("0"!=result.code)

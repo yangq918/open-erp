@@ -1,6 +1,8 @@
 package org.yq.open.openerp.controller;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -27,9 +29,12 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.DecimalFormat;
 import java.util.*;
 
@@ -63,11 +68,9 @@ public class ProductInventroyController extends BaseController {
             @Override
             public Predicate toPredicate(Root<ProductInventory> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
                 Predicate pu = null;
-                if(null!=u)
-                {
-                    if("1".equals(u.getType()))
-                    {
-                        pu = cb.equal(root.get("userId").as(String.class),u.getId());
+                if (null != u) {
+                    if ("1".equals(u.getType())) {
+                        pu = cb.equal(root.get("userId").as(String.class), u.getId());
                     }
                 }
                 if (StringUtils.isNotBlank(searchType) && StringUtils.isNotBlank(searchValue)) {
@@ -78,30 +81,22 @@ public class ProductInventroyController extends BaseController {
                         Predicate p2 = cb.like(root.get("manufacturer").as(String.class), "%" + searchValue + "%");
                         Predicate p3 = cb.like(root.get("name").as(String.class), "%" + searchValue + "%");
 
-                        if(null==pu)
-                        {
+                        if (null == pu) {
                             query.where(cb.or(cb.or(p1, p2), p3));
-                        }
-                        else
-                        {
-                            query.where(cb.and(pu,cb.or(cb.or(p1, p2), p3)));
+                        } else {
+                            query.where(cb.and(pu, cb.or(cb.or(p1, p2), p3)));
                         }
 
                     } else {
-                        if(null==pu)
-                        {
+                        if (null == pu) {
                             query.where(cb.like(root.get(searchType).as(String.class), "%" + searchValue + "%"));
-                        }
-                        else
-                        {
-                            query.where(cb.and(pu,cb.like(root.get(searchType).as(String.class), "%" + searchValue + "%")));
+                        } else {
+                            query.where(cb.and(pu, cb.like(root.get(searchType).as(String.class), "%" + searchValue + "%")));
                         }
 
                     }
-                }
-                else{
-                    if(null!=pu)
-                    {
+                } else {
+                    if (null != pu) {
                         query.where(pu);
                     }
                 }
@@ -118,22 +113,17 @@ public class ProductInventroyController extends BaseController {
         }
 
 
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.Direction.DESC, "createDate", "id");
 
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.Direction.DESC, "createDate","id");
-
-        Map<String,User> userMap = new HashMap<>();
+        Map<String, User> userMap = new HashMap<>();
         Page<ProductInventory> ls = productInventoryRepository.findAll(spec, pageable);
 
-        if(null!=ls)
-        {
+        if (null != ls) {
             List<ProductInventory> cls = ls.getContent();
-            if(null!=cls)
-            {
-                for(ProductInventory cl:cls)
-                {
-                    User tempUser = getUser(cl.getUserId(),userMap);
-                    if(null!=tempUser)
-                    {
+            if (null != cls) {
+                for (ProductInventory cl : cls) {
+                    User tempUser = getUser(cl.getUserId(), userMap);
+                    if (null != tempUser) {
                         cl.setUserName(tempUser.getUserName());
                     }
                 }
@@ -143,32 +133,27 @@ public class ProductInventroyController extends BaseController {
     }
 
     private User getUser(String userId, Map<String, User> userMap) {
-        if(StringUtils.isEmpty(userId))
-        {
+        if (StringUtils.isEmpty(userId)) {
             return null;
         }
         User u = userMap.get(userId);
-        if(null!=u)
-        {
+        if (null != u) {
             return u;
         }
-        Optional<User> op= userRepository.findById(userId);
-        if(!op.isPresent())
-        {
+        Optional<User> op = userRepository.findById(userId);
+        if (!op.isPresent()) {
             u = new User();
-            userMap.put(userId,u);
-            return  u;
-        }
-        else
-        {
+            userMap.put(userId, u);
+            return u;
+        } else {
             u = op.get();
-            userMap.put(userId,u);
+            userMap.put(userId, u);
             return u;
         }
     }
 
     @RequestMapping("/add")
-    public Map<String, Object> add(ProductInventory data,HttpSession session) {
+    public Map<String, Object> add(ProductInventory data, HttpSession session) {
         User u = (User) session.getAttribute("user");
         if (null == u) {
             throw new IllegalStateException("SESSION不存在！");
@@ -475,5 +460,33 @@ public class ProductInventroyController extends BaseController {
 
         }
         return workbook;
+    }
+
+    @RequestMapping(path = "/downDesc", method = {RequestMethod.GET,RequestMethod.POST})
+    public void downDesc(String fileName, HttpServletResponse resp) throws IOException {
+        String path = System.getProperty("user.dir") + File.separator + "prodesc";
+
+        File dir = new File(path);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        String filePath = path + File.separator + fileName;
+        File file = FileUtils.getFile(filePath);
+        OutputStream out = resp.getOutputStream();
+        if (file.exists() && file.isFile()) {
+            resp.setHeader("content-type", "application/octet-stream");
+            resp.setContentType("application/octet-stream");
+            resp.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+            FileUtils.copyFile(file,out);
+
+        }
+        else
+        {
+            resp.setHeader("content-type", "application/octet-stream");
+            resp.setContentType("application/octet-stream");
+            resp.setHeader("Content-Disposition", "attachment;filename=empty.txt");
+            IOUtils.write("空文件",out,"UTF-8");
+        }
+        out.flush();
     }
 }
