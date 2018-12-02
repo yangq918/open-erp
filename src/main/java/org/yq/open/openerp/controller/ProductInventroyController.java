@@ -485,7 +485,7 @@ public class ProductInventroyController extends BaseController {
             resp.setHeader("content-type", "application/octet-stream");
             resp.setContentType("application/octet-stream");
             resp.setHeader("Content-Disposition", "attachment;filename=empty.txt");
-            IOUtils.write("空文件",out,"UTF-8");
+            IOUtils.write(new byte[]{},out);
         }
         out.flush();
     }
