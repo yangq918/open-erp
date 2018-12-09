@@ -124,7 +124,15 @@ public class ProductInventroyController extends BaseController {
                 for (ProductInventory cl : cls) {
                     User tempUser = getUser(cl.getUserId(), userMap);
                     if (null != tempUser) {
-                        cl.setUserName(tempUser.getUserName());
+                        if(StringUtils.isEmpty(tempUser.getUserName()))
+                        {
+                            cl.setUserName(tempUser.getAccount());
+                        }
+                        else
+                        {
+                            cl.setUserName(tempUser.getUserName());
+                        }
+
                     }
                 }
             }
