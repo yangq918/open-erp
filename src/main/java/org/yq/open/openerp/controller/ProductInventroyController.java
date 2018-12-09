@@ -132,6 +132,77 @@ public class ProductInventroyController extends BaseController {
         return toSuccess(ls);
     }
 
+
+    @RequestMapping(path = "/exportPro", method = RequestMethod.POST)
+    public void exportPro(HttpSession session, HttpServletResponse resp) throws IOException {
+        User u = (User) session.getAttribute("user");
+        ProductInventory p = new ProductInventory();
+        if (null != u && "1".equals(u.getType())) {
+            p.setUserId(u.getId());
+        }
+        Example<ProductInventory> ex = Example.of(p);
+        List<ProductInventory> list = productInventoryRepository.findAll(ex,Sort.by(Sort.Direction.DESC,"createDate"));
+
+        Workbook wb = new XSSFWorkbook();
+        Sheet sheet = wb.createSheet("库存信息");
+        CellStyle style = wb.createCellStyle();
+        style.setAlignment(HorizontalAlignment.CENTER);
+        Row row = sheet.createRow(0);
+        int i = 0;
+        createCell(style, row, i++, "物资编码");
+        createCell(style, row, i++, "物资名称");
+        createCell(style, row, i++, "单位");
+        createCell(style, row, i++, "单位成本");
+        createCell(style, row, i++, "存放位置");
+        createCell(style, row, i++, "库存值");
+        createCell(style, row, i++, "型号");
+        createCell(style, row, i++, "规格");
+        createCell(style, row, i++, "说明");
+        createCell(style, row, i++, "生产厂商");
+        createCell(style, row, i++, "厂家联系电话");
+        createCell(style, row, i++, "用途");
+        createCell(style, row, i++, "备用");
+        if (null != list) {
+            int r = 1;
+            for (ProductInventory pro : list) {
+                Row rowValue = sheet.createRow(r++);
+                int cv = 0;
+                createCell(style, rowValue, cv++, Objects.toString(pro.getProductNo(), ""));
+                createCell(style, rowValue, cv++, Objects.toString(pro.getName(), ""));
+                createCell(style, rowValue, cv++, Objects.toString(pro.getUnit(), ""));
+                createCell(style, rowValue, cv++, Objects.toString(pro.getUnitCost(), ""));
+                createCell(style, rowValue, cv++, Objects.toString(pro.getAddress(), ""));
+                createCell(style, rowValue, cv++, Objects.toString(pro.getInventoryNum(), ""));
+                createCell(style, rowValue, cv++, Objects.toString(pro.getProductModel(), ""));
+                createCell(style, rowValue, cv++, Objects.toString(pro.getSpec(), ""));
+                createCell(style, rowValue, cv++, Objects.toString(pro.getDesc(), ""));
+                createCell(style, rowValue, cv++, Objects.toString(pro.getManufacturer(), ""));
+                createCell(style, rowValue, cv++, Objects.toString(pro.getmTeleNumber(), ""));
+                createCell(style, rowValue, cv++, Objects.toString(pro.getPurpose(), ""));
+                createCell(style, rowValue, cv++, Objects.toString(pro.getStandby(), ""));
+            }
+        }
+
+        String fileName = new String("库存.xlsx".getBytes(), "iso8859-1");
+        OutputStream out = resp.getOutputStream();
+
+        resp.setHeader("content-type", "application/octet-stream");
+        resp.setContentType("application/octet-stream");
+        resp.setHeader("Content-Disposition", "attachment;filename="+fileName);
+        wb.write(out);
+
+        out.flush();
+
+
+    }
+
+
+    private void createCell(CellStyle style, Row row, int column, String value) {
+        Cell cell = row.createCell(column);
+        cell.setCellValue(value);
+        cell.setCellStyle(style);
+    }
+
     private User getUser(String userId, Map<String, User> userMap) {
         if (StringUtils.isEmpty(userId)) {
             return null;
@@ -316,6 +387,7 @@ public class ProductInventroyController extends BaseController {
         return toError("-1", "导入失败!");
     }
 
+
     private Map<String, Object> importFileToDB(List<ProductInventory> pis, User u) {
 
         List<ProductInventory> newProds = new ArrayList<>();
@@ -462,7 +534,7 @@ public class ProductInventroyController extends BaseController {
         return workbook;
     }
 
-    @RequestMapping(path = "/downDesc", method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(path = "/downDesc", method = {RequestMethod.GET, RequestMethod.POST})
     public void downDesc(String fileName, HttpServletResponse resp) throws IOException {
         String path = System.getProperty("user.dir") + File.separator + "prodesc";
 
@@ -477,15 +549,13 @@ public class ProductInventroyController extends BaseController {
             resp.setHeader("content-type", "application/octet-stream");
             resp.setContentType("application/octet-stream");
             resp.setHeader("Content-Disposition", "attachment;filename=" + fileName);
-            FileUtils.copyFile(file,out);
+            FileUtils.copyFile(file, out);
 
-        }
-        else
-        {
+        } else {
             resp.setHeader("content-type", "application/octet-stream");
             resp.setContentType("application/octet-stream");
             resp.setHeader("Content-Disposition", "attachment;filename=empty.txt");
-            IOUtils.write(new byte[]{},out);
+            IOUtils.write(new byte[]{}, out);
         }
         out.flush();
     }

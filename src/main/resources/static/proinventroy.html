@@ -156,6 +156,10 @@
                                                 class="am-btn am-btn-default am-btn-secondary only_normal"><span
                                                 class="am-icon-upload"></span> 导入
                                         </button>
+                                        <button id="export_btn" type="button"
+                                                class="am-btn am-btn-default am-btn-warning"><span
+                                                class="am-icon-download"></span> 导出
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -785,6 +789,11 @@
         </div>
 
     </div>
+    <div style="display: none">
+        <form id="export_form" action="/api/proInventory/exportPro" method="post">
+
+        </form>
+    </div>
 </div>
 </div>
 
@@ -1141,6 +1150,11 @@
                 $("#import_prod_btn").removeAttr("disabled");
             }
         }
+        
+        
+        $("#export_btn").click(function () {
+            $("#export_form").submit();
+        });
 
 
     })
