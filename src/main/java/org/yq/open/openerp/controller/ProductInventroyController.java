@@ -124,15 +124,7 @@ public class ProductInventroyController extends BaseController {
                 for (ProductInventory cl : cls) {
                     User tempUser = getUser(cl.getUserId(), userMap);
                     if (null != tempUser) {
-                        if(StringUtils.isEmpty(tempUser.getUserName()))
-                        {
-                            cl.setUserName(tempUser.getAccount());
-                        }
-                        else
-                        {
-                            cl.setUserName(tempUser.getUserName());
-                        }
-
+                        cl.setUserName(tempUser.getAccount());
                     }
                 }
             }
@@ -170,8 +162,16 @@ public class ProductInventroyController extends BaseController {
         createCell(style, row, i++, "厂家联系电话");
         createCell(style, row, i++, "用途");
         createCell(style, row, i++, "备用");
+        if (null != u && "1".equals(u.getType())) {
+
+        }
+        else
+        {
+            createCell(style, row, i++, "所属账号");
+        }
         if (null != list) {
             int r = 1;
+            Map<String, User> userMap = new HashMap<>();
             for (ProductInventory pro : list) {
                 Row rowValue = sheet.createRow(r++);
                 int cv = 0;
@@ -188,6 +188,16 @@ public class ProductInventroyController extends BaseController {
                 createCell(style, rowValue, cv++, Objects.toString(pro.getmTeleNumber(), ""));
                 createCell(style, rowValue, cv++, Objects.toString(pro.getPurpose(), ""));
                 createCell(style, rowValue, cv++, Objects.toString(pro.getStandby(), ""));
+                if (null != u && "1".equals(u.getType())) {
+
+                }else {
+                    User tempUser = getUser(pro.getUserId(), userMap);
+                    String userAccount = "";
+                    if (null != tempUser) {
+                        userAccount = tempUser.getAccount();
+                    }
+                    createCell(style, rowValue, cv++, userAccount);
+                }
             }
         }
 

@@ -161,6 +161,11 @@ function showUser() {
                 var user = result.data;
                 console.log($("span[name='user_name_span']"));
                 $("span[name='user_name_span']").text(user.userName);
+                if(null==user.userName||""==user.userName)
+                {
+                    $("span[name='user_name_span']").text(user.account);
+                }
+
                 if (null != user.imgUrl && "" != user.imgUrl) {
                     $("#user_img_id").attr("src", user.imgUrl);
                 }
