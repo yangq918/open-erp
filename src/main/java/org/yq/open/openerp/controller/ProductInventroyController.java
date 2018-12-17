@@ -5,8 +5,10 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,10 +33,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.text.DecimalFormat;
 import java.util.*;
 
@@ -141,7 +140,7 @@ public class ProductInventroyController extends BaseController {
             p.setUserId(u.getId());
         }
         Example<ProductInventory> ex = Example.of(p);
-        List<ProductInventory> list = productInventoryRepository.findAll(ex,Sort.by(Sort.Direction.DESC,"createDate"));
+        List<ProductInventory> list = productInventoryRepository.findAll(ex, Sort.by(Sort.Direction.DESC, "createDate"));
 
         Workbook wb = new XSSFWorkbook();
         Sheet sheet = wb.createSheet("库存信息");
@@ -164,9 +163,7 @@ public class ProductInventroyController extends BaseController {
         createCell(style, row, i++, "备用");
         if (null != u && "1".equals(u.getType())) {
 
-        }
-        else
-        {
+        } else {
             createCell(style, row, i++, "所属账号");
         }
         if (null != list) {
@@ -190,7 +187,7 @@ public class ProductInventroyController extends BaseController {
                 createCell(style, rowValue, cv++, Objects.toString(pro.getStandby(), ""));
                 if (null != u && "1".equals(u.getType())) {
 
-                }else {
+                } else {
                     User tempUser = getUser(pro.getUserId(), userMap);
                     String userAccount = "";
                     if (null != tempUser) {
@@ -198,6 +195,7 @@ public class ProductInventroyController extends BaseController {
                     }
                     createCell(style, rowValue, cv++, userAccount);
                 }
+
             }
         }
 
@@ -206,7 +204,7 @@ public class ProductInventroyController extends BaseController {
 
         resp.setHeader("content-type", "application/octet-stream");
         resp.setContentType("application/octet-stream");
-        resp.setHeader("Content-Disposition", "attachment;filename="+fileName);
+        resp.setHeader("Content-Disposition", "attachment;filename=" + fileName);
         wb.write(out);
 
         out.flush();
@@ -214,9 +212,165 @@ public class ProductInventroyController extends BaseController {
 
     }
 
+    @RequestMapping(path = "/exportActionRecord", method = RequestMethod.POST)
+    public void exportActionRecord(HttpSession session, HttpServletResponse resp) throws IOException {
+        User u = (User) session.getAttribute("user");
+        ProductInventory p = new ProductInventory();
+        if (null != u && "1".equals(u.getType())) {
+            p.setUserId(u.getId());
+        }
+        Example<ProductInventory> ex = Example.of(p);
+        List<ProductInventory> list = productInventoryRepository.findAll(ex, Sort.by(Sort.Direction.DESC, "createDate"));
+
+        Workbook wb = new XSSFWorkbook();
+        Sheet sheet = wb.createSheet("库存操作记录");
+        CellStyle style = wb.createCellStyle();
+        style.setAlignment(HorizontalAlignment.CENTER);
+        style.setVerticalAlignment(VerticalAlignment.CENTER);
+        Row row = sheet.createRow(0);
+        int i = 0;
+        createCell(style, row, i++, "物资编码");
+        createCell(style, row, i++, "物资名称");
+        createCell(style, row, i++, "单位");
+        createCell(style, row, i++, "单位成本");
+        createCell(style, row, i++, "存放位置");
+        createCell(style, row, i++, "库存值");
+        createCell(style, row, i++, "型号");
+        createCell(style, row, i++, "规格");
+        createCell(style, row, i++, "说明");
+        createCell(style, row, i++, "生产厂商");
+        createCell(style, row, i++, "厂家联系电话");
+        createCell(style, row, i++, "用途");
+        createCell(style, row, i++, "备用");
+        if (null != u && "1".equals(u.getType())) {
+
+        } else {
+            createCell(style, row, i++, "所属账号");
+        }
+        createCell(style, row, i++, "操作类型");
+        createCell(style, row, i++, "操作人");
+        createCell(style, row, i++, "数量");
+        createCell(style, row, i++, "操作前库存");
+        createCell(style, row, i++, "操作后库存");
+        createCell(style, row, i++, "记录时间");
+        createCell(style, row, i++, "备注");
+        if (null != list) {
+            int r = 1;
+            Map<String, User> userMap = new HashMap<>();
+            for (ProductInventory pro : list) {
+                UseRecord d = new UseRecord();
+                d.setUserId(pro.getUserId());
+                d.setProductNo(pro.getProductNo());
+                d.setProId(pro.getId());
+                Example<UseRecord> exu = Example.of(d);
+                List<UseRecord> urs = useRecordRepository.findAll(exu, Sort.by(Sort.Direction.ASC, "createDate"));
+                Row rowValue = sheet.createRow(r);
+                int recordLength = CollectionUtils.isEmpty(urs) ? 1 : urs.size();
+                int cv = 0;
+                createCell(style, rowValue, cv++, Objects.toString(pro.getProductNo(), ""));
+                createCell(style, rowValue, cv++, Objects.toString(pro.getName(), ""));
+                createCell(style, rowValue, cv++, Objects.toString(pro.getUnit(), ""));
+                createCell(style, rowValue, cv++, Objects.toString(pro.getUnitCost(), ""));
+                createCell(style, rowValue, cv++, Objects.toString(pro.getAddress(), ""));
+                createCell(style, rowValue, cv++, Objects.toString(pro.getInventoryNum(), ""));
+                createCell(style, rowValue, cv++, Objects.toString(pro.getProductModel(), ""));
+                createCell(style, rowValue, cv++, Objects.toString(pro.getSpec(), ""));
+                createCell(style, rowValue, cv++, Objects.toString(pro.getDesc(), ""));
+                createCell(style, rowValue, cv++, Objects.toString(pro.getManufacturer(), ""));
+                createCell(style, rowValue, cv++, Objects.toString(pro.getmTeleNumber(), ""));
+                createCell(style, rowValue, cv++, Objects.toString(pro.getPurpose(), ""));
+                createCell(style, rowValue, cv++, Objects.toString(pro.getStandby(), ""));
+                if (null != u && "1".equals(u.getType())) {
+
+                } else {
+                    User tempUser = getUser(pro.getUserId(), userMap);
+                    String userAccount = "";
+                    if (null != tempUser) {
+                        userAccount = tempUser.getAccount();
+                    }
+                    createCell(style, rowValue, cv++, userAccount);
+                }
+                int endCv = cv;
+                if (CollectionUtils.isNotEmpty(urs)) {
+                    int addIndex = 0;
+
+                    for (UseRecord ur : urs) {
+                        Row recordRowValue = null;
+                        if (addIndex == 0) {
+                            recordRowValue = rowValue;
+                        } else {
+                            recordRowValue = sheet.createRow(r + addIndex);
+                        }
+                        int cellBegin = cv;
+                        createCell(style, recordRowValue, cellBegin++, switchActionType(ur.getType()));
+                        createCell(style, recordRowValue, cellBegin++, Objects.toString(ur.getUserName(), ""));
+                        createCell(style, recordRowValue, cellBegin++, Objects.toString(ur.getNum(), ""));
+                        createCell(style, recordRowValue, cellBegin++, Objects.toString(ur.getBeforeNum(), ""));
+                        createCell(style, recordRowValue, cellBegin++, Objects.toString(ur.getAfterNum(), ""));
+                        createCell(style, recordRowValue, cellBegin++, parseTime(ur.getCreateDate()));
+                        createCell(style, recordRowValue, cellBegin++, Objects.toString(ur.getRemark(), ""));
+                        addIndex = addIndex + 1;
+                    }
+                }
+                mergCell(r,recordLength,0,endCv,sheet);
+                r = r + recordLength;
+
+            }
+        }
+
+
+        String fileName = new String("操作记录.xlsx".getBytes(), "iso8859-1");
+        OutputStream out = resp.getOutputStream();
+
+        resp.setHeader("content-type", "application/octet-stream");
+        resp.setContentType("application/octet-stream");
+        resp.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+        wb.write(out);
+
+        out.flush();
+
+    }
+
+    private void mergCell(int beginRow, int rowSize, int i, int endCv, Sheet sheet) {
+        if(rowSize<=1)
+        {
+            return;
+        }
+        for(int index = i;index<endCv;index++) {
+            CellRangeAddress callRangeAddress = new CellRangeAddress(beginRow,beginRow+rowSize-1,index,index);
+            sheet.addMergedRegion(callRangeAddress);
+        }
+    }
+
+
+    public String switchActionType(String actionType) {
+        if ("1".equals(actionType)) {
+            return "出库";
+        } else {
+            return "入库";
+        }
+    }
+
+    public String parseTime(Date d) {
+        if (null != d) {
+            return DateFormatUtils.format(d, "yyyy-MM-dd HH:mm:ss");
+        } else {
+            return "";
+        }
+    }
+
 
     private void createCell(CellStyle style, Row row, int column, String value) {
         Cell cell = row.createCell(column);
+        cell.setCellValue(value);
+        cell.setCellStyle(style);
+    }
+
+    private void createMergCell(CellStyle style, Row row,int column, String value,Sheet sheet,int beginRow,int rowSize) {
+        Cell cell = row.createCell(column);
+
+        CellRangeAddress callRangeAddress = new CellRangeAddress(beginRow,beginRow+rowSize,column,column);
+        sheet.addMergedRegion(callRangeAddress);
         cell.setCellValue(value);
         cell.setCellStyle(style);
     }
@@ -294,12 +448,16 @@ public class ProductInventroyController extends BaseController {
 
         if (op.isPresent()) {
             ProductInventory pi = op.get();
+            data.setBeforeNum(pi.getInventoryNum());
             long rl = subtract(pi.getInventoryNum(), data.getNum());
             if (rl < 0) {
                 return toError("-1", "库存不够！");
             }
             pi.setInventoryNum(rl);
             data.setId(UUID.randomUUID().toString());
+            data.setProductNo(pi.getProductNo());
+            data.setUserId(pi.getUserId());
+            data.setAfterNum(pi.getInventoryNum());
             useRecordRepository.saveAndFlush(data);
             productInventoryRepository.saveAndFlush(pi);
             return toSuccess(null);
@@ -317,10 +475,14 @@ public class ProductInventroyController extends BaseController {
 
         if (op.isPresent()) {
             ProductInventory pi = op.get();
+            data.setBeforeNum(pi.getInventoryNum());
             long rl = add(pi.getInventoryNum(), data.getNum());
 
             pi.setInventoryNum(rl);
             data.setId(UUID.randomUUID().toString());
+            data.setProductNo(pi.getProductNo());
+            data.setUserId(pi.getUserId());
+            data.setAfterNum(pi.getInventoryNum());
             useRecordRepository.saveAndFlush(data);
             productInventoryRepository.saveAndFlush(pi);
             return toSuccess(null);
@@ -342,10 +504,11 @@ public class ProductInventroyController extends BaseController {
     }
 
     @RequestMapping("/listUseRecord")
-    public Map<String, Object> listUseRecord(@RequestParam(name = "pageNumber", required = false) Integer pageNumber, @RequestParam(name = "pageSize", required = false) Integer pageSize, String proId) {
+    public Map<String, Object> listUseRecord(@RequestParam(name = "pageNumber", required = false) Integer pageNumber, @RequestParam(name = "pageSize", required = false) Integer pageSize, String productId, @RequestParam(name = "userId", required = false) String userId) {
 
         UseRecord d = new UseRecord();
-        d.setProId(proId);
+        d.setProductNo(productId);
+        d.setUserId(userId);
         Example<UseRecord> ex = Example.of(d);
         if (pageNumber == null) {
             pageNumber = 0;

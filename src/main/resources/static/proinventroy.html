@@ -99,7 +99,7 @@
                 </a>
             </li>
             <li class="sidebar-nav-link">
-                <a href="tables.html" class="active">
+                <a href="proinventroy.html" class="active">
                     <i class="am-icon-wpforms sidebar-nav-link-logo"></i> 库存管理
                 </a>
             </li>
@@ -159,6 +159,10 @@
                                         <button id="export_btn" type="button"
                                                 class="am-btn am-btn-default am-btn-warning"><span
                                                 class="am-icon-download"></span> 导出
+                                        </button>
+                                        <button id="exportRecord_btn" type="button"
+                                                class="am-btn am-btn-default am-btn-primary"><span
+                                                class="am-icon-list"></span> 导出操作记录
                                         </button>
                                     </div>
                                 </div>
@@ -474,6 +478,7 @@
                                        id="s_productNo"
                                 >
                                 <input type="hidden" class="cus_form_input" name="id" id="s_id">
+                                <input type="hidden" class="cus_form_input" name="userId" id="s_userId">
                             </div>
                         </div>
                         <div class="am-form-group">
@@ -572,7 +577,7 @@
                                 <th style="width: 15%">使用人</th>
                                 <th style="width: 15% ">数量</th>
                                 <th style="width: 15% ">操作类型</th>
-                                <th style="width: 20%">出库时间</th>
+                                <th style="width: 20%">记录时间</th>
                                 <th style="width: 35% ">备注</th>
 
                             </tr>
@@ -791,6 +796,11 @@
     </div>
     <div style="display: none">
         <form id="export_form" action="/api/proInventory/exportPro" method="post">
+
+        </form>
+    </div>
+    <div style="display: none">
+        <form id="exportRecord_form" action="/api/proInventory/exportActionRecord" method="post">
 
         </form>
     </div>
@@ -1156,6 +1166,10 @@
             $("#export_form").submit();
         });
 
+        $("#exportRecord_btn").click(function () {
+            $("#exportRecord_form").submit();
+        });
+
 
     })
 
@@ -1178,15 +1192,18 @@
         $("#s_unit").val($data.unit);
         $("#s_unitCost").val($data.unitCost);
         $("#s_id").val($data.id);
+        $("#s_userId").val($data.userId);
+
         swithModalTheme();
 
         var $useTable = $('#take_record_r').DataTable();
         $useTable.clear();
-        renderTable($useTable, "/api/proInventory/listUseRecord", {"proId": $data.id}, $("#use_page_ul"));
+        renderTable($useTable, "/api/proInventory/listUseRecord", toShowPageParams(0), $("#use_page_ul"));
     }
 
     function toShowPageParams(pageNumber) {
-        return {"proId": $("#s_id").val(), "pageNumber": pageNumber};
+
+        return {"productId": $("#s_productNo").val(),"userId": $("#s_userId").val(), "pageNumber": pageNumber};
     }
 
     function toPageParams(pageNumber) {

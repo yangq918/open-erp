@@ -18,6 +18,15 @@ public class UseRecord {
     @Column(name = "proId")
     private String proId;
 
+    @Column(name="user_id",length = 100)
+    private String userId;
+
+    /**
+     * 物资编码
+     */
+    @Column(name = "product_no")
+    private String productNo;
+
     @Column(name = "user_name")
     private String userName;
 
@@ -26,6 +35,13 @@ public class UseRecord {
 
     @Column(name="num")
     private Long num;
+
+
+    @Column(name="before_num")
+    private Long beforeNum;
+
+    @Column(name="after_num")
+    private Long afterNum;
 
     @Column(name = "remark")
     private String remark;
@@ -100,5 +116,37 @@ public class UseRecord {
 
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getProductNo() {
+        return productNo;
+    }
+
+    public void setProductNo(String productNo) {
+        this.productNo = productNo;
+    }
+
+    public Long getBeforeNum() {
+        return beforeNum;
+    }
+
+    public void setBeforeNum(Long beforeNum) {
+        this.beforeNum = beforeNum;
+    }
+
+    public Long getAfterNum() {
+        return afterNum;
+    }
+
+    public void setAfterNum(Long afterNum) {
+        this.afterNum = afterNum;
     }
 }
